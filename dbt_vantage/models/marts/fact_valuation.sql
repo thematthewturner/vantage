@@ -1,14 +1,14 @@
 {{ config(materialized='table') }}
 
 -- Grain: company × as_of_date × method. Natural key all three.
--- valuation_usd is total enterprise/equity value depending on method (documented
--- in metric layer). USD millions, DECIMAL.
+-- Phase 0+: curated marks (public market cap, secondary, primary round) land in
+-- `fact_valuation_seed`, each with a source_id. USD millions, DECIMAL.
 
 SELECT
-    CAST(NULL AS VARCHAR)       AS company_id,
-    CAST(NULL AS DATE)          AS as_of_date,
-    CAST(NULL AS DECIMAL(20,4)) AS valuation_usd,
-    CAST(NULL AS DECIMAL(20,6)) AS price_per_share,
-    CAST(NULL AS VARCHAR)       AS method,
-    CAST(NULL AS VARCHAR)       AS source_id
-WHERE 1 = 0
+    company_id,
+    as_of_date,
+    valuation_usd,
+    price_per_share,
+    method,
+    source_id
+FROM {{ ref('fact_valuation_seed') }}

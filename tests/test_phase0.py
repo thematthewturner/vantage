@@ -119,6 +119,30 @@ def test_money_columns_are_decimal(warehouse: duckdb.DuckDBPyConnection) -> None
         assert dtype.startswith("DECIMAL"), f"{table}.{col} should be DECIMAL, got {dtype}"
 
 
+def test_curated_corpus_loaded(warehouse: duckdb.DuckDBPyConnection) -> None:
+    # After loading the curated FY2025/Q1 2026 + private funding seeds we
+    # expect substantive row counts. These thresholds lock in the post-research
+    # corpus — they tighten as the corpus grows.
+    n_fin = warehouse.execute("SELECT COUNT(*) FROM fact_financials").fetchone()[0]
+    n_rounds = warehouse.execute("SELECT COUNT(*) FROM fact_funding_round").fetchone()[0]
+    n_val = warehouse.execute("SELECT COUNT(*) FROM fact_valuation").fetchone()[0]
+    n_lives = warehouse.execute("SELECT COUNT(*) FROM fact_covered_lives").fetchone()[0]
+    assert n_fin >= 40, f"expected curated financials, got {n_fin}"
+    assert n_rounds >= 10, f"expected curated funding rounds, got {n_rounds}"
+    assert n_val >= 10, f"expected curated valuation marks, got {n_val}"
+    assert n_lives >= 8, f"expected curated covered-lives rows, got {n_lives}"
+
+
+def test_every_fact_row_has_a_source(warehouse: duckdb.DuckDBPyConnection) -> None:
+    # The provenance invariant from CLAUDE.md: no fact row without a dim_source.
+    for table in ("fact_financials", "fact_funding_round", "fact_valuation",
+                  "fact_covered_lives", "fact_operating_metric"):
+        nulls = warehouse.execute(
+            f"SELECT COUNT(*) FROM {table} WHERE source_id IS NULL"
+        ).fetchone()[0]
+        assert nulls == 0, f"{table} has {nulls} rows without a source_id"
+
+
 def test_build_is_idempotent(warehouse: duckdb.DuckDBPyConnection) -> None:
     # Re-running dbt build should not duplicate seed rows. Drop the read-only
     # connection's lock between builds so dbt can acquire the writer lock.

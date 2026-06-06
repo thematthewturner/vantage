@@ -31,6 +31,6 @@ headway,Headway Inc.,private,,,,employer_mental_health,mental_health_network,saa
 spring_health,Spring Care Inc.,private,,,,employer_mental_health,workforce_mental_health,saas,false,2016,NY,springhealth.com,Employer workforce mental-health platform with triage and provider network
 lyra,Lyra Health Inc.,private,,,,employer_mental_health,workforce_mental_health,saas,false,2015,CA,lyrahealth.com,Workforce mental health for employers; precision-care matching and curated network
 ro,Roman Health Ventures Inc.,private,,,,dtc_telehealth_subscription,multi_category,dtc_sub,false,2017,NY,ro.co,"DTC telehealth across men's health, weight, and chronic conditions"
-omada,Omada Health Inc.,private,,,,employer_msk,cardiometabolic_msk,saas,true,2011,CA,omadahealth.com,"Employer-sold digital programs for diabetes prevention, hypertension, and MSK"
+omada,Omada Health Inc.,public,OMDA,NASDAQ,,employer_msk,cardiometabolic_msk,saas,true,2011,CA,omadahealth.com,"Employer-sold digital programs for diabetes prevention, hypertension, and MSK"
 talkiatry,Talkiatry Inc.,private,,,,employer_mental_health,psychiatry_mso,saas,false,2020,NY,talkiatry.com,In-network psychiatry MSO; hybrid in-person and virtual
 color,Color Health Inc.,private,,,,diagnostics_genomics,population_genomics,dx,false,2014,CA,color.com,Population-scale genomic dx and screening programs for employers and health systems

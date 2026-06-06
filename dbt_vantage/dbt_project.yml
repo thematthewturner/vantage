@@ -65,6 +65,39 @@ seeds:
         life_type: VARCHAR
         lives_count: BIGINT
         source_id: VARCHAR
+    fact_financials_seed:
+      +column_types:
+        company_id: VARCHAR
+        fiscal_period: VARCHAR
+        period_end: DATE
+        is_guidance: BOOLEAN
+        revenue: DECIMAL(20,4)
+        gross_profit: DECIMAL(20,4)
+        gross_margin: DECIMAL(9,6)
+        opex: DECIMAL(20,4)
+        adj_ebitda: DECIMAL(20,4)
+        net_income: DECIMAL(20,4)
+        free_cash_flow: DECIMAL(20,4)
+        cash_and_sti: DECIMAL(20,4)
+        source_id: VARCHAR
+    fact_valuation_seed:
+      +column_types:
+        company_id: VARCHAR
+        as_of_date: DATE
+        valuation_usd: DECIMAL(20,4)
+        price_per_share: DECIMAL(20,6)
+        method: VARCHAR
+        source_id: VARCHAR
+    fact_funding_round_seed:
+      +column_types:
+        round_id: VARCHAR
+        company_id: VARCHAR
+        announced_date: DATE
+        round_type: VARCHAR
+        amount_usd: DECIMAL(20,4)
+        post_money_valuation: DECIMAL(20,4)
+        lead_investors_raw: VARCHAR
+        source_id: VARCHAR
 
 vars:
   # Currency unit is USD millions across the warehouse (see CLAUDE.md).

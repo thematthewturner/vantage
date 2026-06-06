@@ -23,7 +23,8 @@ The DuckDB warehouse lands at `./vantage.duckdb` (gitignored). Always run dbt fr
 
 ## Phase status
 
-- [x] **Phase 0** — Scaffold + schema + seeds. `dbt build` green (4 seeds, 12 models, 48 tests).
+- [x] **Phase 0** — Scaffold + schema + seeds. `dbt build` green (7 seeds, 12 models, 48 tests).
+- [x] **Phase 0.5** — Curated public financials (22 cos × FY2025 + Q1 2026), 14 private funding rounds, 12 valuation marks, all cited. `scripts/load_curated_*.py` are the loaders.
 - [ ] Phase 1 — SEC ingestion (`edgartools` + XBRL → `fact_financials`).
 - [ ] Phase 2 — Metric layer (denominator-aware comparisons).
 - [ ] Phase 3 — Funding/news + Claude enrichment.

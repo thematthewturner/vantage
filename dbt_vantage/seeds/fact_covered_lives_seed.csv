@@ -1,1 +1,12 @@
 company_id,fiscal_period,life_type,lives_count,source_id
+hims_hers,2026Q1,subscriber,2600000,src_press_579615c9
+oscar_health,2025FY,enrolled,2000000,src_press_c69bf7f1
+oscar_health,2026Q1,enrolled,3170000,src_press_315f7847
+privia_health,2026Q1,attributed,1606000,src_press_571dccd7
+progyny,2026Q1,eligible,7185000,src_press_cf105fbc
+agilon,2026Q1,at_risk,426000,src_press_c63f907e
+goodrx,2026Q1,subscriber,5300000,src_sec_a4b9670f
+clover,2026Q1,enrolled,155773,src_sec_2e0e0f7a
+astrana,2025FY,attributed,1600000,src_press_6c06f6e2
+maven,2024FY,eligible,17000000,src_press_90880d70
+spring_health,2024FY,eligible,10000000,src_press_37161ea4

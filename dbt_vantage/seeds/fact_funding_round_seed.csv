@@ -1,0 +1,15 @@
+round_id,company_id,announced_date,round_type,amount_usd,post_money_valuation,lead_investors_raw,source_id
+rnd_02eea1d87c,aledade,2023-06-21,series_f,260.0,3500.0,Lightspeed Venture Partners,src_press_90264fa1
+rnd_d13a3f552b,aledade,2025-12-01,debt,500.0,,,src_press_e7b2cae9
+rnd_5bc3e65bc6,devoted_health,2025-10-16,series_e,300.0,12600.0,Andreessen Horowitz;Uprising;SoftBank,src_press_07a38890
+rnd_e8c4538db8,cityblock,2024-09-01,series_e,400.0,5700.0,,src_press_385aa32e
+rnd_8551978cb5,maven,2024-10-08,series_f,125.0,1700.0,StepStone Group,src_press_90880d70
+rnd_9ba7b02edc,headway,2024-07-01,series_d,100.0,2300.0,Spark Capital,src_press_9a9828e3
+rnd_90ce9f7ca4,headway,2023-10-01,series_c,125.0,,Spark Capital,src_press_321a64c2
+rnd_bbc6deb3d8,spring_health,2024-07-31,series_e,100.0,3300.0,Generation Investment Management,src_press_37161ea4
+rnd_2a2ed91c9a,lyra,2022-01-19,series_f,235.0,5580.0,Dragoneer,src_press_5dcfe54e
+rnd_81b79921a1,ro,2022-02-01,series_d,150.0,7000.0,ShawSpring Partners,src_press_8d04f738
+rnd_ce739ea86a,talkiatry,2024-06-18,series_c,130.0,,Andreessen Horowitz;Perceptive Advisors,src_press_49765c90
+rnd_a55e171c0f,talkiatry,2026-02-12,series_d,210.0,,Andreessen Horowitz,src_press_66ff7ab7
+rnd_90d276355c,color,2021-11-01,series_e,100.0,4600.0,General Catalyst;T. Rowe Price,src_press_3b1195a2
+rnd_50f81e2599,omada,2025-06-05,growth,150.0,,Morgan Stanley;Goldman Sachs;J.P. Morgan,src_press_84f82583

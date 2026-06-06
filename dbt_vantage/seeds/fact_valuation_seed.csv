@@ -1,0 +1,13 @@
+company_id,as_of_date,valuation_usd,price_per_share,method,source_id
+aledade,2023-06-21,3500.0,,primary_round,src_press_90264fa1
+devoted_health,2025-10-16,12600.0,,primary_round,src_press_07a38890
+cityblock,2024-09-01,5700.0,,primary_round,src_press_385aa32e
+maven,2024-10-08,1700.0,,primary_round,src_press_90880d70
+headway,2024-07-01,2300.0,,primary_round,src_press_9a9828e3
+spring_health,2024-07-31,3300.0,,primary_round,src_press_37161ea4
+lyra,2022-01-19,5580.0,,primary_round,src_press_5dcfe54e
+ro,2022-02-01,7000.0,,primary_round,src_press_8d04f738
+color,2021-11-01,4600.0,,primary_round,src_press_3b1195a2
+cityblock,2025-01-01,6300.0,,secondary_npm,src_press_dcbcec8c
+ro,2024-12-31,7000.0,,secondary_npm,src_press_7e634998
+lyra,2024-12-31,5580.0,,secondary_npm,src_press_8ce09ab2
