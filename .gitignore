@@ -1,0 +1,42 @@
+# DuckDB analytical store (system of record between runs, not source)
+vantage.duckdb
+vantage.duckdb.wal
+*.duckdb
+*.duckdb.wal
+
+# Secrets / config
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.python-version
+
+# uv
+.uv/
+
+# dbt
+dbt_vantage/target/
+dbt_vantage/dbt_packages/
+dbt_vantage/logs/
+dbt_vantage/.user.yml
+
+# LanceDB local indexes
+.lancedb/
+lancedb/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store

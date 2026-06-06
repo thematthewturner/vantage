@@ -1,0 +1,13 @@
+vantage:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # Path is resolved relative to the current working directory. The
+      # contract is: ALWAYS run dbt from the repo root (or via `vantage build`,
+      # which cd's there). Override with VANTAGE_DUCKDB_PATH for tests/CI.
+      path: "{{ env_var('VANTAGE_DUCKDB_PATH', 'vantage.duckdb') }}"
+      threads: 4
+      # Note: httpfs is only needed for S3/HTTP reads. Add when ingestion
+      # starts pulling remote files (Phase 1+):
+      #   extensions: [httpfs]

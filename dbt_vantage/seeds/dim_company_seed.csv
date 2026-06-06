@@ -1,0 +1,36 @@
+company_id,legal_name,status,ticker,exchange,cik,segment,sub_segment,business_model,is_public_benefit,founded_year,hq_state,website,description
+teladoc,Teladoc Health Inc.,public,TDOC,NYSE,,dtc_telehealth_subscription,whole_person_care,dtc_sub,false,2002,NY,teladochealth.com,"Whole-person virtual care: primary care, mental health, chronic condition management"
+hims_hers,Hims & Hers Health Inc.,public,HIMS,NYSE,,dtc_telehealth_subscription,multi_category,dtc_sub,false,2017,CA,hims.com,DTC telehealth subscriptions across men's and women's health categories
+hinge_health,Hinge Health Inc.,public,HNGE,NYSE,,employer_msk,digital_msk,saas,false,2014,CA,hingehealth.com,Digital MSK care platform sold to employers and health plans
+oscar_health,Oscar Health Inc.,public,OSCR,NYSE,,aca_marketplace,individual_and_ma,full_risk,false,2012,NY,hioscar.com,Individual ACA marketplace and small-group health plan
+privia_health,Privia Health Group Inc.,public,PRVA,NASDAQ,,vbc_enabler_pcp,medical_group_enabler,vbc_enabler,false,2007,VA,priviahealth.com,Multi-state medical group enabler for independent providers across FFS and VBC
+doximity,Doximity Inc.,public,DOCS,NYSE,,provider_network_advertising,,saas,false,2010,CA,doximity.com,Professional network for US physicians; revenue from pharma and health-system marketing
+evolent,Evolent Health Inc.,public,EVH,NYSE,,vbc_enabler_specialty,specialty_vbc,vbc_enabler,false,2011,VA,evolent.com,"Specialty VBC management across oncology, cardiology, and MSK"
+progyny,Progyny Inc.,public,PGNY,NASDAQ,,employer_navigation,fertility_benefits,saas,false,2008,NY,progyny.com,Employer fertility and family-building benefits manager
+agilon,agilon health Inc.,public,AGL,NYSE,,vbc_enabler_pcp,senior_primary_care,vbc_enabler,false,2016,TX,agilonhealth.com,Long-term partnerships with primary-care groups for global capitation in MA
+health_catalyst,Health Catalyst Inc.,public,HCAT,NASDAQ,,health_data_commercial,health_system_analytics,saas,false,2008,UT,healthcatalyst.com,Data and analytics platform sold to US health systems
+phreesia,Phreesia Inc.,public,PHR,NYSE,,provider_saas,patient_intake,saas,false,2005,NY,phreesia.com,"Patient intake, registration, and clinical-engagement SaaS for ambulatory practices"
+definitive_healthcare,Definitive Healthcare Corp.,public,DH,NASDAQ,,health_data_commercial,healthcare_commercial_intel,saas,false,2011,MA,definitivehc.com,"Healthcare commercial intelligence: provider, payer, and supplier data"
+recursion,Recursion Pharmaceuticals Inc.,public,RXRX,NASDAQ,,ai_drug_discovery,,data_infra,false,2013,UT,recursion.com,Automated cell-imaging plus ML for industrialized drug discovery
+schrodinger,Schrödinger Inc.,public,SDGR,NASDAQ,,ai_drug_discovery,computational_chemistry,saas,false,1990,NY,schrodinger.com,Physics-based computational chemistry software plus internal drug discovery pipeline
+amwell,American Well Corp.,public,AMWL,NYSE,,dtc_telehealth_subscription,enterprise_virtual_care,saas,false,2006,MA,amwell.com,Enterprise virtual-care platform sold to health plans and systems
+talkspace,Talkspace Inc.,public,TALK,NASDAQ,,employer_mental_health,virtual_therapy,saas,false,2012,NY,talkspace.com,"Virtual therapy across DTC, employer, and health-plan channels"
+lifestance,LifeStance Health Group Inc.,public,LFST,NASDAQ,,employer_mental_health,outpatient_mental_health,saas,false,2017,AZ,lifestance.com,"Outpatient mental-health clinician group, hybrid in-person and virtual"
+tempus_ai,Tempus AI Inc.,public,TEM,NASDAQ,,precision_medicine_data,oncology_data_and_dx,data_infra,false,2015,IL,tempus.com,Oncology-led precision medicine: genomic dx plus de-identified clinical data licensing
+waystar,Waystar Holding Corp.,public,WAY,NASDAQ,,revenue_cycle_management,provider_rcm,saas,false,2017,UT,waystar.com,Revenue-cycle SaaS for provider organizations
+goodrx,GoodRx Holdings Inc.,public,GDRX,NASDAQ,,dtc_specialty_pharmacy,prescription_savings,dtc_sub,false,2011,CA,goodrx.com,"Consumer prescription pricing comparison, manufacturer solutions, and telehealth"
+clover,Clover Health Investments Corp.,public,CLOV,NASDAQ,,medicare_advantage_full_risk,ma_pcp_platform,full_risk,false,2013,TN,cloverhealth.com,Medicare Advantage insurer built around its Clover Assistant clinical decision platform
+astrana,Astrana Health Inc.,public,ASTH,NASDAQ,,vbc_enabler_pcp,physician_network,vbc_enabler,false,1994,CA,astranahealth.com,"Physician network and MSO operating capitated arrangements across MA, Medicaid, and commercial"
+one_medical,1Life Healthcare Inc.,acquired,,,,provider_saas,membership_primary_care,saas,false,2007,CA,onemedical.com,Membership-based primary care; acquired by Amazon in 2023
+accolade,Accolade Inc.,acquired,,,,employer_navigation,personalized_advocacy,saas,false,2007,WA,accolade.com,Personalized employer benefits navigation and advocacy; acquired by Transcarent in 2025
+aledade,Aledade Inc.,private,,,,mssp_aco,physician_aco_enabler,vbc_enabler,true,2014,MD,aledade.com,"ACO enabler for independent primary-care practices across MSSP, MA, and commercial VBC"
+devoted_health,Devoted Health Inc.,private,,,,medicare_advantage_full_risk,integrated_ma,full_risk,false,2017,MA,devoted.com,Integrated Medicare Advantage plan with in-house clinical services
+cityblock,Cityblock Health Inc.,private,,,,medicaid_managed,duals_and_medicaid,vbc_enabler,true,2017,NY,cityblock.com,Community-based primary care for Medicaid and dual-eligible populations
+maven,Maven Clinic Co.,private,,,,employer_navigation,family_and_womens_health,saas,false,2014,NY,mavenclinic.com,Virtual family and women's-health benefits for employers and health plans
+headway,Headway Inc.,private,,,,employer_mental_health,mental_health_network,saas,false,2019,NY,headway.co,In-network mental-health provider marketplace and billing infrastructure
+spring_health,Spring Care Inc.,private,,,,employer_mental_health,workforce_mental_health,saas,false,2016,NY,springhealth.com,Employer workforce mental-health platform with triage and provider network
+lyra,Lyra Health Inc.,private,,,,employer_mental_health,workforce_mental_health,saas,false,2015,CA,lyrahealth.com,Workforce mental health for employers; precision-care matching and curated network
+ro,Roman Health Ventures Inc.,private,,,,dtc_telehealth_subscription,multi_category,dtc_sub,false,2017,NY,ro.co,"DTC telehealth across men's health, weight, and chronic conditions"
+omada,Omada Health Inc.,private,,,,employer_msk,cardiometabolic_msk,saas,true,2011,CA,omadahealth.com,"Employer-sold digital programs for diabetes prevention, hypertension, and MSK"
+talkiatry,Talkiatry Inc.,private,,,,employer_mental_health,psychiatry_mso,saas,false,2020,NY,talkiatry.com,In-network psychiatry MSO; hybrid in-person and virtual
+color,Color Health Inc.,private,,,,diagnostics_genomics,population_genomics,dx,false,2014,CA,color.com,Population-scale genomic dx and screening programs for employers and health systems

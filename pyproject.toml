@@ -1,0 +1,72 @@
+[project]
+name = "vantage"
+version = "0.0.1"
+description = "Digital Health Intelligence Engine"
+requires-python = ">=3.11"
+readme = "README.md"
+
+dependencies = [
+    # Core analytical store + transform
+    "duckdb>=1.1.0",
+    "dbt-core>=1.8.0",
+    "dbt-duckdb>=1.8.0",
+
+    # Validation / config
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+
+    # Ingestion (Phase 1+)
+    "edgartools>=3.0.0",
+    "httpx>=0.27",
+    "selectolax>=0.3.21",
+    "feedparser>=6.0.11",
+
+    # LLM enrichment (Phase 3+)
+    "anthropic>=0.40.0",
+
+    # Semantic search (Phase 5+)
+    "lancedb>=0.13",
+
+    # Orchestration (Phase 7)
+    "prefect>=2.20",
+
+    # CLI + utilities
+    "typer>=0.12",
+    "rich>=13.7",
+    "python-dateutil>=2.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "mypy>=1.10",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+vantage = "cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ingest", "engine", "prospectus", "orchestration"]
+only-include = ["ingest", "engine", "prospectus", "orchestration", "cli.py"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["ingest", "engine", "prospectus"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"

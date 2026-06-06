@@ -1,0 +1,71 @@
+name: vantage
+version: "0.1.0"
+config-version: 2
+
+profile: vantage
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+snapshot-paths: ["snapshots"]
+
+target-path: target
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  vantage:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+    metrics:
+      +materialized: view
+
+seeds:
+  vantage:
+    dim_segment_seed:
+      +column_types:
+        segment: VARCHAR
+        denominator_class: VARCHAR
+        default_life_type: VARCHAR
+        typical_rev_per_unit_low: DECIMAL(20,4)
+        typical_rev_per_unit_high: DECIMAL(20,4)
+        notes: VARCHAR
+    dim_company_seed:
+      +column_types:
+        company_id: VARCHAR
+        legal_name: VARCHAR
+        status: VARCHAR
+        ticker: VARCHAR
+        exchange: VARCHAR
+        cik: VARCHAR
+        segment: VARCHAR
+        sub_segment: VARCHAR
+        business_model: VARCHAR
+        is_public_benefit: BOOLEAN
+        founded_year: INTEGER
+        hq_state: VARCHAR
+        website: VARCHAR
+        description: VARCHAR
+    dim_source_seed:
+      +column_types:
+        source_id: VARCHAR
+        source_type: VARCHAR
+        url: VARCHAR
+        retrieved_at: TIMESTAMP
+        reliability: VARCHAR
+    fact_covered_lives_seed:
+      +column_types:
+        company_id: VARCHAR
+        fiscal_period: VARCHAR
+        life_type: VARCHAR
+        lives_count: BIGINT
+        source_id: VARCHAR
+
+vars:
+  # Currency unit is USD millions across the warehouse (see CLAUDE.md).
+  currency_unit: "USD_millions"

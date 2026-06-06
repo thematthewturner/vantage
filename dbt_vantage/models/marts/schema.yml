@@ -1,0 +1,312 @@
+version: 2
+
+models:
+  # -------------------------------------------------------------------- DIMS
+  - name: dim_segment
+    description: |
+      Segment taxonomy with its denominator class. Every cross-company metric
+      must assert matching `denominator_class` before comparing — see CLAUDE.md.
+    columns:
+      - name: segment
+        description: Slug primary key.
+        tests:
+          - not_null
+          - unique
+      - name: denominator_class
+        description: How "one unit" is counted for revenue-per-unit metrics.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['covered_life', 'provider', 'test', 'contract', 'transaction']
+      - name: default_life_type
+        description: For covered_life segments, the default life_type.
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['at_risk', 'attributed', 'enrolled', 'eligible', 'subscriber']
+              config:
+                where: "default_life_type IS NOT NULL"
+
+  - name: dim_source
+    description: |
+      Every primary, secondary, and estimate source. No fact row exists without
+      a foreign key into this table.
+    columns:
+      - name: source_id
+        tests:
+          - not_null
+          - unique
+      - name: source_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['10-K', '10-Q', 'S-1', '8-K', 'DEF14A', 'press', 'cms_puf', 'secondary_mkt', 'analyst', 'manual']
+      - name: reliability
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['primary', 'secondary', 'estimate']
+
+  - name: dim_company
+    description: |
+      Company directory. Phase 0 sourced from `dim_company_seed.csv`; Phase 1+
+      overlays SEC-derived identifiers (CIK, exact legal name).
+    columns:
+      - name: company_id
+        description: Slug primary key.
+        tests:
+          - not_null
+          - unique
+      - name: status
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['public', 'private', 'acquired', 'delisted']
+      - name: segment
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_segment')
+                field: segment
+      - name: business_model
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['full_risk', 'vbc_enabler', 'dtc_sub', 'saas', 'dx', 'data_infra']
+      - name: founded_year
+        tests:
+          - not_null
+
+  - name: dim_person
+    description: People (founders, execs, board). Populated Phase 3+.
+    columns:
+      - name: person_id
+        tests:
+          - unique
+
+  # ------------------------------------------------------------------- FACTS
+  - name: fact_funding_round
+    description: |
+      Funding rounds. Grain = (company_id, announced_date, round_type, amount_usd).
+      Populated Phase 3 from news + 8-K.
+    columns:
+      - name: round_id
+        tests:
+          - unique
+      - name: company_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+              config:
+                where: "company_id IS NOT NULL"
+      - name: source_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_source')
+                field: source_id
+              config:
+                where: "source_id IS NOT NULL"
+
+  - name: fact_financials
+    description: |
+      Company financials per fiscal period. Currency = USD millions.
+      `is_guidance` always set; guidance never blended into actuals.
+    columns:
+      - name: company_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+              config:
+                where: "company_id IS NOT NULL"
+      - name: source_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_source')
+                field: source_id
+              config:
+                where: "source_id IS NOT NULL"
+
+  - name: fact_covered_lives
+    description: |
+      Covered lives by company, period, and life_type. The denominator-discipline
+      table — every metric joining this must match on life_type.
+    columns:
+      - name: company_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+              config:
+                where: "company_id IS NOT NULL"
+      - name: life_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['at_risk', 'attributed', 'enrolled', 'eligible', 'subscriber']
+              config:
+                where: "life_type IS NOT NULL"
+      - name: source_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_source')
+                field: source_id
+              config:
+                where: "source_id IS NOT NULL"
+
+  - name: fact_operating_metric
+    description: Flexible EAV. Grain = company × period × metric_name.
+    columns:
+      - name: company_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+              config:
+                where: "company_id IS NOT NULL"
+      - name: source_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_source')
+                field: source_id
+              config:
+                where: "source_id IS NOT NULL"
+
+  - name: fact_valuation
+    description: Company valuations by method and date. USD millions.
+    columns:
+      - name: company_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+              config:
+                where: "company_id IS NOT NULL"
+      - name: method
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['primary_round', 'secondary_npm', 'public_mktcap', '409a']
+              config:
+                where: "method IS NOT NULL"
+      - name: source_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_source')
+                field: source_id
+              config:
+                where: "source_id IS NOT NULL"
+
+  - name: fact_event
+    description: Timeline events (IPO, M&A, partnership, layoff, regulatory).
+    columns:
+      - name: event_id
+        tests:
+          - unique
+      - name: company_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+              config:
+                where: "company_id IS NOT NULL"
+
+  - name: fact_projection
+    description: |
+      Per-company scenario projections. Re-derivable from `assumptions` JSON.
+      Written by engine/scenarios.py.
+    columns:
+      - name: company_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+              config:
+                where: "company_id IS NOT NULL"
+      - name: scenario
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['base', 'bull', 'bear']
+              config:
+                where: "scenario IS NOT NULL"
+
+  - name: fact_policy_exposure
+    description: Policy-exposure scores per company. 0-5 ordinal.
+    columns:
+      - name: company_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+              config:
+                where: "company_id IS NOT NULL"
+
+seeds:
+  - name: dim_segment_seed
+    description: Taxonomy seed feeding `dim_segment`.
+    columns:
+      - name: segment
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_source_seed
+    description: Bootstrap sources for the seeded company directory.
+    columns:
+      - name: source_id
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_company_seed
+    description: |
+      Cold-start company directory. ~35 well-known public, acquired, and private
+      digital-health companies. Operator may extend; CIK is intentionally blank
+      and gets filled by Phase 1 SEC ingestion.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+      - name: segment
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_segment_seed')
+                field: segment
+
+  - name: fact_covered_lives_seed
+    description: |
+      Header-only by default. Drop the curated revenue-per-covered-life dataset
+      here. Every row must reference a `source_id` present in `dim_source_seed`.
+    columns:
+      - name: source_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_source_seed')
+                field: source_id
+              config:
+                where: "source_id IS NOT NULL"
