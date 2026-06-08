@@ -1,0 +1,37 @@
+company_id	source_type	url	title	discovered_at
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000119312525051004/d829170ds1.htm	Hinge Health, Inc. - Form S-1	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/1673743/000119312525118259/d829170ds1a.htm	Hinge Health, Inc. - Form S-1/A Amendment	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000119312525125262/d829170d424b4.htm	Hinge Health, Inc. - Form 424B4 IPO Prospectus	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000095017025106577/hnge-20250630.htm	Hinge Health, Inc. - Form 10-Q Q2 2025	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000119312525272353/hnge-20250930.htm	Hinge Health, Inc. - Form 10-Q Q3 2025	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000162828026032224/hnge-20260331.htm	Hinge Health, Inc. - Form 10-Q Q1 2026	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000162828026013808/hnge-20251231.htm	Hinge Health, Inc. - Form 10-K FY2025	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000095017025103024/hnge-20250805.htm	Hinge Health, Inc. - Form 8-K August 5, 2025	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000119312525264667/hnge-20251104.htm	Hinge Health, Inc. - Form 8-K November 4, 2025	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000119312525276208/hnge-20251110.htm	Hinge Health, Inc. - Form 8-K November 10, 2025	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000162828026006826/hnge-20260210.htm	Hinge Health, Inc. - Form 8-K February 10, 2026	2026-06-08
+hinge_health	sec_filing	https://www.sec.gov/Archives/edgar/data/0001673743/000162828026030499/hnge-20260505.htm	Hinge Health, Inc. - Form 8-K May 5, 2026	2026-06-08
+hinge_health	ir_press	https://ir.hingehealth.com/news/news-details/2025/Hinge-Health-Announces-Pricing-of-Initial-Public-Offering/default.aspx	Hinge Health Announces Pricing of Initial Public Offering	2026-06-08
+hinge_health	ir_press	https://ir.hingehealth.com/news/news-details/2026/Hinge-Health-reports-fourth-quarter-and-full-year-2025-financial-results/default.aspx	Hinge Health reports fourth quarter and full year 2025 financial results	2026-06-08
+hinge_health	ir_press	https://www.hingehealth.com/resources/press-releases/hinge-health-to-announce-fourth-quarter-and-full-year-2025-financial-results/	Hinge Health to announce fourth quarter and full year 2025 financial results	2026-06-08
+hinge_health	ir_press	https://www.hingehealth.com/resources/press-releases/hinge-health-reports-record-first-quarter-2026-financial-results/	Hinge Health reports record first quarter 2026 financial results	2026-06-08
+hinge_health	ir_press	https://www.hingehealth.com/resources/press-releases/hinge-health-to-announce-first-quarter-2026-financial-results-on-may-5-2026/	Hinge Health to announce first quarter 2026 financial results on May 5, 2026	2026-06-08
+hinge_health	ir_press	https://www.businesswire.com/news/home/20251111828569/en/Hinge-Health-announces-$250-million-share-repurchase-program	Hinge Health announces $250 million share repurchase program	2026-06-08
+hinge_health	ir_press	https://www.businesswire.com/news/home/20260505775006/en/Hinge-Health-reports-record-first-quarter-2026-financial-results	Hinge Health reports record first quarter 2026 financial results	2026-06-08
+hinge_health	ir_press	https://www.hingehealth.com/resources/press-releases/hinge-health-brings-personalized-digital-msk-solution-global/	Hinge Health Brings Personalized Digital MSK Solution to the Global Workforce	2026-06-08
+hinge_health	ir_press	https://www.hingehealth.com/resources/press-releases/100-public-sector-clients/	Hinge Health is now accessible to 4M workers across 100+ public sector organizations	2026-06-08
+hinge_health	trade_press	https://www.fiercehealthcare.com/digital-health/hinge-health-projects-2026-revenue-hit-732m-buoyed-strong-growth-investments-ai	Hinge Health projects 2026 revenue to hit $732M buoyed by strong growth, AI investments	2026-06-08
+hinge_health	trade_press	https://www.fiercehealthcare.com/digital-health/hinge-health-lifts-2026-outlook-after-strong-q1-expansion-new-conditions	Hinge Health lifts 2026 outlook after strong Q1 as it expands to new conditions	2026-06-08
+hinge_health	trade_press	https://www.fiercehealthcare.com/health-tech/hinge-health-launches-provider-network-connect-virtual-and-person-msk-care	Hinge Health adds in-person care to its digital MSK solution	2026-06-08
+hinge_health	trade_press	https://www.modernhealthcare.com/health-tech/mh-hinge-health-daniel-perez-ai-earnings/	Hinge Health's Daniel Perez on AI powering the company's growth	2026-06-08
+hinge_health	trade_press	https://www.cnbc.com/2025/05/05/from-cockroach-award-to-big-board-hinge-health-unlikely-path-to-ipo.html	From 'Cockroach Award' to the Big Board: Hinge Health's unlikely path to IPO	2026-06-08
+hinge_health	trade_press	https://www.cnbc.com/video/2025/05/22/hinge-health-ceo-on-company-ahead-of-first-trade-health-care-business-and-growth.html	Hinge Health CEO on company ahead of first trade, health care business and growth	2026-06-08
+hinge_health	trade_press	https://www.cnbc.com/video/2026/04/29/daniel-perez-hinge-health-ceo-a-fortt-knox-update.html	Daniel Perez, Hinge Health CEO: A Fortt Knox Update	2026-06-08
+hinge_health	news	https://finance.yahoo.com/news/hinge-health-reports-fourth-quarter-210500618.html	Hinge Health reports fourth quarter and full year 2025 financial results	2026-06-08
+hinge_health	transcript	https://seekingalpha.com/article/4868427-hinge-health-inc-hnge-q4-2025-earnings-call-transcript	Hinge Health, Inc. (HNGE) Q4 2025 Earnings Call Transcript	2026-06-08
+hinge_health	transcript	https://www.investing.com/news/transcripts/earnings-call-transcript-hinge-health-q4-2025-delivers-strong-earnings-beat-93CH-4498391	Earnings call transcript: Hinge Health Q4 2025 delivers strong earnings beat	2026-06-08
+hinge_health	transcript	https://www.investing.com/news/transcripts/earnings-call-transcript-hinge-health-beats-q1-2026-earnings-expectations-93CH-4661288	Earnings call transcript: Hinge Health beats Q1 2026 earnings expectations	2026-06-08
+hinge_health	transcript	https://www.fool.com/earnings/call-transcripts/2026/02/10/hinge-health-hnge-q4-2025-earnings-transcript/	Hinge Health (HNGE) Q4 2025 Earnings Transcript	2026-06-08
+hinge_health	transcript	https://www.fool.com/earnings/call-transcripts/2026/05/05/hinge-health-hnge-q1-2026-earnings-transcript/	Hinge Health (HNGE) Q1 2026 Earnings Transcript	2026-06-08
+hinge_health	conference	https://ir.hingehealth.com/events-presentations/event-details/2025/Hinge-Health-Q3-2025-Earnings-Call/default.aspx	Hinge Health Q3 2025 Earnings Call	2026-06-08
+hinge_health	news	https://www.hingehealth.com/for-organizations/state-of-msk-report-2025/	Moving beyond pain | The State of MSK Care 2025	2026-06-08

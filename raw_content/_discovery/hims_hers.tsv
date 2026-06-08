@@ -1,0 +1,28 @@
+company_id	source_type	url	title	discovered_at
+hims_hers	sec_filing	https://www.sec.gov/Archives/edgar/data/1773751/000177375125000152/hims-20250331x8xkearningsr.htm	Hims & Hers Health, Inc. - Form 8-K - Q1 2025 Earnings	2026-06-08
+hims_hers	sec_filing	https://www.sec.gov/Archives/edgar/data/1773751/000177375125000248/hims-20250630x8xkearningsr.htm	Hims & Hers Health, Inc. - Form 8-K - Q2 2025 Earnings	2026-06-08
+hims_hers	sec_filing	https://www.sec.gov/Archives/edgar/data/1773751/000177375125000352/hims-20250930x8xkearningsr.htm	Hims & Hers Health, Inc. - Form 8-K - Q3 2025 Earnings	2026-06-08
+hims_hers	sec_filing	https://www.sec.gov/Archives/edgar/data/1773751/000177375125000059/hims-20241231x8xkearningsr.htm	Hims & Hers Health, Inc. - Form 8-K - Q4 2025 Earnings	2026-06-08
+hims_hers	sec_filing	https://www.sec.gov/Archives/edgar/data/1773751/000177375126000074/hims-20260331x8xkearningsr.htm	Hims & Hers Health, Inc. - Form 8-K - Q1 2026 Earnings	2026-06-08
+hims_hers	ir_press	https://investors.hims.com/news/news-details/2025/Hims--Hers-Health-Inc--Reports-Second-Quarter-2025-Financial-Results/	Hims & Hers Health, Inc. Reports Second Quarter 2025 Financial Results	2026-06-08
+hims_hers	ir_press	https://investors.hims.com/news/news-details/2026/Hims--Hers-Health-Inc--Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx	Hims & Hers Health, Inc. Reports Fourth Quarter and Full Year 2025 Financial Results	2026-06-08
+hims_hers	ir_press	https://investors.hims.com/news/news-details/2026/Hims--Hers-Health-Inc--Reports-First-Quarter-2026-Financial-Results/default.aspx	Hims & Hers Health, Inc. Reports First Quarter 2026 Financial Results	2026-06-08
+hims_hers	ir_press	https://investors.hims.com/news/news-details/2025/Hims--Hers-Health-Inc--Announces-250-Million-Share-Repurchase-Program-Authorization/default.aspx	Hims & Hers Health, Inc. Announces $250 Million Share Repurchase Program Authorization	2026-06-08
+hims_hers	ir_press	https://investors.hims.com/news/news-details/2026/Novo-Nordisk's-FDA-Approved-GLP-1s-Now-Available-With-Hims--Hers/default.aspx	Novo Nordisk's FDA-Approved GLP-1s Now Available With Hims & Hers	2026-06-08
+hims_hers	trade_press	https://www.businesswire.com/news/home/20260223564900/en/Hims-Hers-Health-Inc.-Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results	Hims & Hers Health, Inc. Reports Fourth Quarter and Full Year 2025 Financial Results	2026-06-08
+hims_hers	trade_press	https://www.businesswire.com/news/home/20260511509432/en/Hims-Hers-Health-Inc.-Reports-First-Quarter-2026-Financial-Results	Hims & Hers Health, Inc. Reports First Quarter 2026 Financial Results	2026-06-08
+hims_hers	trade_press	https://www.cnbc.com/2025/08/04/hims-hers-hims-q2-earnings-2025.html	Hims & Hers (HIMS) Q2 earnings 2025	2026-06-08
+hims_hers	trade_press	https://www.fiercehealthcare.com/health-tech/hims-hers-bullish-weight-loss-business-despite-glp-1-market-shift	Hims & Hers projects weight loss business to hit $725M in 2025 despite GLP-1 market shift	2026-06-08
+hims_hers	trade_press	https://www.statnews.com/2026/02/23/him-hers-earnings-2026-outlook-compounded-semaglutide/	Hims & Hers Health addresses scrutiny of GLP-1 compounding	2026-06-08
+hims_hers	transcript	https://s27.q4cdn.com/787306631/files/doc_financials/2025/q4/Hims-Hers-Fourth-Quarter-2025-Earnings-Call-Transcript.pdf	Hims & Hers Fourth Quarter 2025 Earnings Call Transcript	2026-06-08
+hims_hers	transcript	https://www.fool.com/earnings/call-transcripts/2025/11/03/hims-hers-hims-q3-2025-earnings-call-transcript/	Hims Hers (HIMS) Q3 2025 Earnings Call Transcript	2026-06-08
+hims_hers	transcript	https://seekingalpha.com/article/4808543-hims-and-hers-health-inc-hims-q2-2025-earnings-call-transcript	Hims & Hers Health, Inc. (HIMS) Q2 2025 Earnings Call Transcript	2026-06-08
+hims_hers	transcript	https://finance.yahoo.com/quote/HIMS/earnings/HIMS-Q1-2026-earnings_call-564744.html	Hims & Hers Health, Inc. (HIMS) Q1 FY2026 earnings call transcript	2026-06-08
+hims_hers	transcript	https://www.gurufocus.com/stock/HIMS/transcripts/8850182	Q1 2026 Hims & Hers Health Inc Earnings Call Transcript	2026-06-08
+hims_hers	transcript	https://seekingalpha.com/article/4902694-hims-and-hers-health-inc-hims-q1-2026-earnings-call-transcript	Hims & Hers Health, Inc. (HIMS) Q1 2026 Earnings Call Transcript	2026-06-08
+hims_hers	conference	https://s27.q4cdn.com/787306631/files/doc_presentations/2025/May/05/Hims-Hers-Q1-2025-Investor-Presentation.pdf	Hims-Hers Q1 2025 Investor Presentation	2026-06-08
+hims_hers	conference	https://s27.q4cdn.com/787306631/files/doc_financials/2025/q2/Hims-Hers-Q2-2025-Investor-Presentation.pdf	Hims-Hers Q2 2025 Investor Presentation	2026-06-08
+hims_hers	news	https://www.morningstar.com/news/business-wire/20260223564900/hims-hers-health-inc-reports-fourth-quarter-and-full-year-2025-financial-results	Hims & Hers Health, Inc. Reports Fourth Quarter and Full Year 2025 Financial Results	2026-06-08
+hims_hers	news	https://finance.yahoo.com/news/hims-hers-health-inc-reports-210500403.html	Hims & Hers Health, Inc. Reports Fourth Quarter and Full Year 2025 Financial Results	2026-06-08
+hims_hers	news	https://www.morningstar.com/news/business-wire/20260511509432/hims-hers-health-inc-reports-first-quarter-2026-financial-results	Hims & Hers Health, Inc. Reports First Quarter 2026 Financial Results	2026-06-08
+hims_hers	news	https://finance.yahoo.com/sectors/healthcare/articles/hims-hers-health-inc-reports-200500077.html	Hims & Hers Health, Inc. Reports First Quarter 2026 Financial Results	2026-06-08
