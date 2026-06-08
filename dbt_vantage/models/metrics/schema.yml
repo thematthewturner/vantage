@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: metric_company_latest
+    description: |
+      Latest available financial figures per company, the base view for the
+      safety-index family. One row per company in `dim_company`.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+
+  - name: metric_enterprise_value
+    description: |
+      Enterprise value, market cap, and the four common valuation ratios
+      (EV/revenue, EV/EBITDA, EV/FCF, FCF yield) for the 22 publics.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+      - name: enterprise_value
+        tests:
+          - not_null
+
+  - name: metric_graham_pure
+    description: |
+      Classical Graham defensive-investor 7-criterion screen. Most criteria
+      land on data_unavailable for our universe; the failure pattern IS the
+      diagnostic — Graham doesn't price asset-light, no-dividend growth.
+
+  - name: metric_species_ceiling
+    description: |
+      Index #1. Species-conditional EV multiple ceilings (full_risk ≤ 12×
+      EBITDA, vbc_enabler ≤ 14× EBITDA, saas ≤ 25× FCF, dtc_sub ≤ 5×
+      revenue with FCF > 0, data_infra ≤ 8× revenue with GM ≥ 65%,
+      dx ≤ 6× revenue with GM ≥ 50%). Pass requires multiple + quality gate.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+      - name: species_overall
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['pass', 'fail', 'fail_no_ebitda', 'fail_no_fcf']
+
+  - name: metric_quality_composite
+    description: |
+      Index #3. Cross-section z-scored quality composite across FCF yield,
+      gross margin, capital efficiency, cash runway, and revenue growth.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+
+  - name: metric_reverse_dcf
+    description: |
+      Index #2. Reverse-DCF implied 5-year revenue CAGR vs observed
+      run-rate growth. Holds discount rate at 10% and long-run g at 3%;
+      terminal FCF margin varies by business_model.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+      - name: dcf_verdict
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['cushion', 'fairly_priced', 'priced_for_perfection', 'data_unavailable']
+
+  - name: metric_guidance_adjusted_value
+    description: |
+      Index #4. Guidance-reliability prior translated into a discount-rate
+      adjustment (±200bps swing band). Phase 0 prior is 0.50 uniform.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+
+  - name: metric_risk_balance
+    description: |
+      Index #5. Denominator volatility + policy-exposure composite.
+      Modifier on the demanded margin of safety, not its own valuation index.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+
+  - name: metric_safety_index
+    description: |
+      Final layered output. One row per public, every index's verdict
+      side-by-side, plus a combined directional safety score, a category
+      bucket, and a rank across the public corpus. Not a buy/sell signal —
+      a transparent ranking framework.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+      - name: recommendation_bucket
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - 'quality_and_cushion'
+                  - 'watch_list'
+                  - 'neutral'
+                  - 'avoid_or_special_view_required'

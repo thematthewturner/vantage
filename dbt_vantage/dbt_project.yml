@@ -98,6 +98,30 @@ seeds:
         post_money_valuation: DECIMAL(20,4)
         lead_investors_raw: VARCHAR
         source_id: VARCHAR
+    fact_market_data_seed:
+      +column_types:
+        company_id: VARCHAR
+        as_of_date: DATE
+        shares_diluted: DECIMAL(20,4)
+        close_price: DECIMAL(20,4)
+        total_debt: DECIMAL(20,4)
+        source_id: VARCHAR
+    fact_guidance_accuracy_seed:
+      +column_types:
+        company_id: VARCHAR
+        as_of_date: DATE
+        guidance_reliability: DECIMAL(9,6)
+        n_observations: INTEGER
+        prior_strength: VARCHAR
+        source_id: VARCHAR
+    fact_policy_exposure_seed:
+      +column_types:
+        company_id: VARCHAR
+        ma_rate_exposure: INTEGER
+        aca_aptc_exposure: INTEGER
+        cmmi_model_dependence: INTEGER
+        rationale: VARCHAR
+        source_id: VARCHAR
 
 vars:
   # Currency unit is USD millions across the warehouse (see CLAUDE.md).

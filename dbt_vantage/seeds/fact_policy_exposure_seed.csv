@@ -1,0 +1,24 @@
+company_id,ma_rate_exposure,aca_aptc_exposure,cmmi_model_dependence,rationale,source_id
+hims_hers,0,0,0,DTC subscription; minimal direct CMS exposure. GLP-1 reg risk is FDA not CMS.,src_policy_v0
+teladoc,0,0,0,DTC + enterprise telehealth; not at-risk for CMS rates.,src_policy_v0
+hinge_health,0,0,0,Employer-sold MSK; commercial book only.,src_policy_v0
+oscar_health,1,5,0,"Heaviest APTC exposure in corpus; ~75% of revenue is individual ACA. Enhanced subsidies expire end-2025 absent Congressional action.",src_policy_v0
+privia_health,2,1,3,"MA capitation through ACO REACH and MSSP; some marketplace carve-outs.",src_policy_v0
+doximity,0,0,0,Provider network ad platform; no CMS rate exposure.,src_policy_v0
+evolent,3,0,2,Specialty VBC management at-risk under MA carve-outs.,src_policy_v0
+progyny,0,0,0,Employer fertility benefits; commercial book.,src_policy_v0
+agilon,5,0,3,"Existential MA exposure — every attributed life is at-risk under global capitation. v28 phase-in is the dominant driver of FY25 EBITDA loss.",src_policy_v0
+health_catalyst,0,0,0,Provider analytics SaaS; no rate exposure.,src_policy_v0
+phreesia,0,0,0,Patient intake SaaS sold to ambulatory practices.,src_policy_v0
+definitive_healthcare,0,0,0,Commercial intelligence data; no CMS exposure.,src_policy_v0
+recursion,0,0,0,Drug discovery; pre-revenue against CMS.,src_policy_v0
+schrodinger,0,0,0,Computational chemistry software; no CMS exposure.,src_policy_v0
+amwell,0,0,0,Enterprise virtual care platform.,src_policy_v0
+talkspace,0,0,0,DTC + employer mental health.,src_policy_v0
+lifestance,0,0,0,Commercial outpatient mental health.,src_policy_v0
+tempus_ai,1,0,0,"Some Medicare-reimbursed dx revenue; minor rate exposure.",src_policy_v0
+waystar,0,0,0,Provider RCM SaaS.,src_policy_v0
+goodrx,0,0,0,Cash-pay prescription savings; commercial.,src_policy_v0
+clover,5,0,1,MA insurer; full v28 rate exposure and STAR ratings exposure.,src_policy_v0
+astrana,4,0,2,"Heavy MA capitation; v28 hits revenue per member.",src_policy_v0
+omada,0,0,0,Employer-sold digital programs; commercial book.,src_policy_v0

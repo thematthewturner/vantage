@@ -59,3 +59,6 @@ src_press_c69bf7f1,press,https://ir.hioscar.com/news-events-presentations/news-p
 src_press_28854d1b,press,https://ir.priviahealth.com/news-releases/news-release-details/privia-health-reports-fourth-quarter-and-full-year-2025/,2026-06-06 18:00:00,secondary
 src_press_40bec215,press,https://investors.agilonhealth.com/news/news-details/2026/agilon-health-Reports-Fourth-Quarter-and-Full-Year-Fiscal-2025-Results/default.aspx,2026-06-06 18:00:00,primary
 src_press_c4921a65,press,https://investors.tempus.com/news-releases/news-release-details/tempus-reports-fourth-quarter-and-full-year-2025-results,2026-06-06 18:00:00,primary
+src_market_v0,manual,https://internal.vantage/market-data-v0-estimates,2026-06-06 18:00:00,estimate
+src_guidance_prior_v0,manual,https://internal.vantage/guidance-prior-v0-bootstrap,2026-06-06 18:00:00,estimate
+src_policy_v0,manual,https://internal.vantage/policy-exposure-v0-analyst,2026-06-06 18:00:00,estimate

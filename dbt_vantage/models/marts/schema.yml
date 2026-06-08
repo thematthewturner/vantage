@@ -251,16 +251,69 @@ models:
                 where: "scenario IS NOT NULL"
 
   - name: fact_policy_exposure
-    description: Policy-exposure scores per company. 0-5 ordinal.
+    description: |
+      Per-company policy-exposure ordinal scores (0-5) on three axes:
+      MA rate / v28 risk, ACA APTC continuation risk, CMMI/MSSP dependence.
     columns:
       - name: company_id
         tests:
+          - not_null
+          - unique
           - relationships:
               arguments:
                 to: ref('dim_company')
                 field: company_id
-              config:
-                where: "company_id IS NOT NULL"
+      - name: source_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_source')
+                field: source_id
+
+  - name: fact_market_data
+    description: |
+      Point-in-time market snapshot per public company. Phase 0 sourced from
+      estimates (reliability='estimate'); Phase 1 ingest overlays XBRL primaries.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+      - name: source_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_source')
+                field: source_id
+
+  - name: fact_guidance_accuracy
+    description: |
+      Per-company Bayesian prior on guidance accuracy. Phase 0 bootstrap =
+      0.50 uniform; Phase 1.5 backtest replaces with empirical posteriors.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              arguments:
+                to: ref('dim_company')
+                field: company_id
+      - name: guidance_reliability
+        tests:
+          - not_null
+      - name: source_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_source')
+                field: source_id
 
 seeds:
   - name: dim_segment_seed
@@ -310,3 +363,4 @@ seeds:
                 field: source_id
               config:
                 where: "source_id IS NOT NULL"
+
