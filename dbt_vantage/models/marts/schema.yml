@@ -364,3 +364,8 @@ seeds:
               config:
                 where: "source_id IS NOT NULL"
 
+
+  - name: fact_historical_guidance
+    description: |
+      Per-(company, fiscal_period, metric) historical guidance vs realized.
+      Phase 0 = header-only. Phase 1.5 backtest fills via content harvest.

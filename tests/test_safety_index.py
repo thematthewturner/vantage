@@ -76,3 +76,51 @@ def test_market_data_sources_are_marked_estimate(warehouse: duckdb.DuckDBPyConne
         "SELECT reliability FROM dim_source WHERE source_id = 'src_market_v0'"
     ).fetchone()
     assert row is not None and row[0] == "estimate"
+
+
+def test_history_has_multiple_snapshots(warehouse: duckdb.DuckDBPyConnection) -> None:
+    n_dates = warehouse.execute(
+        "SELECT COUNT(DISTINCT as_of_date) FROM metric_safety_index_history"
+    ).fetchone()[0]
+    assert n_dates >= 2, f"backtest needs >= 2 snapshots, got {n_dates}"
+
+
+def test_transitions_emit_at_least_one_rerate(warehouse: duckdb.DuckDBPyConnection) -> None:
+    # A useful backtest produces SOME bucket movement. If every transition
+    # is 'unchanged' the framework is too coarse.
+    rerated = warehouse.execute(
+        "SELECT COUNT(*) FROM metric_safety_index_transitions WHERE transition IN ('rerated_up', 'rerated_down')"
+    ).fetchone()[0]
+    assert rerated > 0, "expected at least one bucket transition in the backtest window"
+
+
+def test_private_index_covers_active_privates(warehouse: duckdb.DuckDBPyConnection) -> None:
+    n_priv = warehouse.execute(
+        "SELECT COUNT(*) FROM dim_company WHERE status = 'private'"
+    ).fetchone()[0]
+    n_indexed = warehouse.execute(
+        "SELECT COUNT(*) FROM metric_private_safety_index"
+    ).fetchone()[0]
+    assert n_indexed == n_priv, f"expected {n_priv} active privates indexed, got {n_indexed}"
+
+
+def test_private_index_ranks_devoted_in_top_band(warehouse: duckdb.DuckDBPyConnection) -> None:
+    # Devoted Health's Series E ($12.6B post on $300M) is the most capital-
+    # efficient fresh mark in the private corpus. If it drops out of the top
+    # cohort that's a real signal worth investigating, not a flaky test.
+    row = warehouse.execute(
+        "SELECT private_verdict FROM metric_private_safety_index WHERE company_id = 'devoted_health'"
+    ).fetchone()
+    assert row is not None and row[0] == "capital_efficient_fresh_mark"
+
+
+def test_guidance_prior_falls_back_to_bootstrap(warehouse: duckdb.DuckDBPyConnection) -> None:
+    # With no historical guidance loaded yet, every prior should still be
+    # the 0.50 bootstrap. The empirical pipeline activates only when
+    # fact_historical_guidance has rows.
+    rows = warehouse.execute(
+        "SELECT guidance_reliability, prior_strength FROM fact_guidance_accuracy"
+    ).fetchall()
+    assert all(float(r[0]) == 0.50 and r[1] == "bootstrap" for r in rows), (
+        "expected all priors at 0.50/bootstrap until historical guidance loads"
+    )

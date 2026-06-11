@@ -122,6 +122,17 @@ seeds:
         cmmi_model_dependence: INTEGER
         rationale: VARCHAR
         source_id: VARCHAR
+    fact_historical_guidance_seed:
+      +column_types:
+        company_id: VARCHAR
+        fiscal_period: VARCHAR
+        metric: VARCHAR
+        guided_value: DECIMAL(20,4)
+        realized_value: DECIMAL(20,4)
+        guidance_issued_date: DATE
+        realization_date: DATE
+        source_id_guidance: VARCHAR
+        source_id_actual: VARCHAR
 
 vars:
   # Currency unit is USD millions across the warehouse (see CLAUDE.md).

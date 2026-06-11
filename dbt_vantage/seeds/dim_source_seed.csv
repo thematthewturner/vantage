@@ -62,3 +62,5 @@ src_press_c4921a65,press,https://investors.tempus.com/news-releases/news-release
 src_market_v0,manual,https://internal.vantage/market-data-v0-estimates,2026-06-06 18:00:00,estimate
 src_guidance_prior_v0,manual,https://internal.vantage/guidance-prior-v0-bootstrap,2026-06-06 18:00:00,estimate
 src_policy_v0,manual,https://internal.vantage/policy-exposure-v0-analyst,2026-06-06 18:00:00,estimate
+src_market_history_v0,manual,https://internal.vantage/market-data-history-v0-estimates,2026-06-06 18:00:00,estimate
+src_historical_guidance_v0,manual,https://internal.vantage/historical-guidance-v0-pending-harvest,2026-06-06 18:00:00,estimate

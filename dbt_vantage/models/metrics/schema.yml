@@ -113,3 +113,33 @@ models:
                   - 'watch_list'
                   - 'neutral'
                   - 'avoid_or_special_view_required'
+
+  - name: metric_enterprise_value_history
+    description: |
+      Multi-snapshot enterprise value. Backs the safety-index backtest.
+      One row per (company_id, as_of_date) in fact_market_data.
+
+  - name: metric_safety_index_history
+    description: |
+      History-aware variant of metric_safety_index. Re-evaluates the
+      EV-dependent indexes (species ceiling, reverse DCF, guidance-adjusted
+      MoS) at every snapshot. Quality composite + risk balance are
+      snapshot-invariant in v1 (constant denominators).
+
+  - name: metric_safety_index_transitions
+    description: |
+      Bucket transitions across consecutive snapshots. Use for backtest
+      audit ("did the framework rerate X before it ran?") and for spotting
+      noisy verdicts.
+
+  - name: metric_private_safety_index
+    description: |
+      Parallel safety index for the private corpus. Ranks on capital
+      efficiency (last_primary_valuation / cumulative_equity_raised),
+      mark freshness (months_since_last_round), and the
+      secondary-vs-primary signal.
+    columns:
+      - name: company_id
+        tests:
+          - not_null
+          - unique
