@@ -1,0 +1,9 @@
+# Core paths and defaults. API keys come from the environment, never here.
+[storage]
+db_path = "data/vantage.duckdb"
+raw_dir = "data/raw"
+
+[index]
+base_value = 100.0
+base_date = "2015-01-02"   # index inception; first trading day with full data
+rebalance = "Q"            # quarterly
