@@ -12,7 +12,8 @@ notebooks. The package is the product; notebooks are thin drivers.
 - **Ingests** tailored healthcare indicators from public APIs into a time-series
   store. Phase 1 ships a **FRED** connector (medical-care CPI, healthcare
   employment, JOLTS health openings, PCE health services, hospital/pharma PPI,
-  10Y Treasury) and an **equity-price** connector (yfinance).
+  10Y Treasury), an **Alpha Vantage** connector for cheap/free near-time
+  intraday RSI signals, and an **equity-price** connector (yfinance).
 - **Builds a custom index** (`VHC`) of ~28 healthcare names — market-cap
   weighted, quarterly rebalanced, base = 100, with both price-return and
   total-return tracks — plus per-sub-sector sub-indices (pharma, payers,
@@ -25,6 +26,7 @@ notebooks. The package is the product; notebooks are thin drivers.
 ```bash
 make setup                      # uv venv + all dependencies
 export FRED_API_KEY=...         # free key: https://fredaccount.stlouisfed.org/apikey
+export ALPHAVANTAGE_API_KEY=... # free key: https://www.alphavantage.co/support/#api-key
 make refresh                    # ingest sources, build all indices
 make lab                        # open the notebooks
 ```
@@ -57,6 +59,8 @@ Data is stored long-format and **bitemporal**: each observation carries an
 `as_of` vintage, so a point-in-time query never sees a revision published after
 a decision date. Raw pulls land as immutable Parquet first, so the whole DuckDB
 store is always rebuildable from `data/raw/`.
+
+**Near-time intraday signals.** For a cheap/free prototype feed, `ALPHAVANTAGE_API_KEY` enables the configured 5-minute RSI signals in `config/sources.toml`. Alpha Vantage's official support page currently describes the free stock API as covering most datasets for up to 25 requests/day, while realtime and 15-minute delayed US market data require premium entitlement; treat this connector as a signal-research feed, not an execution-quality market-data feed.
 
 **Adding a data source** is one file: subclass `Connector`, implement
 `list_series` / `fetch` / `normalize`, decorate with `@register`, and list its

@@ -14,3 +14,10 @@ JTS6200JOL    = { name = "JOLTS: Health Care Job Openings",   subsector = "labor
 PCU622622     = { name = "PPI: General Hospitals",            subsector = "prices",     unit = "Index" }
 WPUSI07003    = { name = "PPI: Pharmaceuticals",              subsector = "prices",     unit = "Index" }
 DGS10         = { name = "10-Year Treasury Yield",           subsector = "macro",      unit = "Percent" }
+
+
+[alphavantage]
+# Cheap/free near-time intraday technical signals. Requires ALPHAVANTAGE_API_KEY.
+# Free tier is useful for a tiny watchlist/prototype; paid tiers are needed for broader coverage.
+LLY_RSI_5MIN = { symbol = "LLY", name = "Eli Lilly 5-minute RSI(14)", indicator = "RSI", interval = "5min", time_period = 14, series_type = "close", subsector = "pharma", unit = "RSI", frequency = "I" }
+UNH_RSI_5MIN = { symbol = "UNH", name = "UnitedHealth 5-minute RSI(14)", indicator = "RSI", interval = "5min", time_period = 14, series_type = "close", subsector = "payers", unit = "RSI", frequency = "I" }

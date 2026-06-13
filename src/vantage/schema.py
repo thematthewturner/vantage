@@ -13,6 +13,7 @@ from pydantic import BaseModel, Field
 
 
 class Frequency(StrEnum):
+    INTRADAY = "I"
     DAILY = "D"
     WEEKLY = "W"
     MONTHLY = "M"
