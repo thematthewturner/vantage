@@ -50,3 +50,8 @@ def load_sources() -> dict:
 def load_universe() -> list[dict]:
     """List of security dicts: ticker, name, subsector, from, to."""
     return _load_toml(CONFIG_DIR / "universe.toml").get("security", [])
+
+
+def load_investor_firms() -> list[dict]:
+    """Curated top-25 healthcare investor-firm watchlist records."""
+    return _load_toml(CONFIG_DIR / "investor_firms.toml").get("firm", [])

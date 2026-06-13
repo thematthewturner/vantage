@@ -17,6 +17,9 @@ notebooks. The package is the product; notebooks are thin drivers.
   weighted, quarterly rebalanced, base = 100, with both price-return and
   total-return tracks — plus per-sub-sector sub-indices (pharma, payers,
   providers, devices, biotech, tools, distributors).
+- **Indexes top healthcare investor firms** in `config/investor_firms.toml`: a
+  curated top-25 watchlist with focus areas, stages, geography, source links,
+  and tailing signals for tracking where specialist healthcare capital moves next.
 - **Compares** indicators against the index with mixed-frequency as-of
   alignment and an honest lead-lag correlation tool.
 
@@ -47,6 +50,7 @@ src/vantage/
   connectors/  one file per source; subclass Connector, emit canonical Observations
   storage/     DuckDB + immutable Parquet raw landing; point-in-time readers
   index/       cap-weighted construction, sub-sector sub-indices
+               healthcare investor-firm watchlist helpers
   transforms/  YoY/z-score signals, as-of alignment, lead-lag correlation
   pipeline/    ingest + refresh orchestration
 notebooks/     thin drivers (percent format)
