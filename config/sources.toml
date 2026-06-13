@@ -1,0 +1,16 @@
+# Series each connector should pull. Adding a series is a one-line edit here.
+# API keys are read from environment variables (FRED_API_KEY, BLS_API_KEY), not stored here.
+
+[fred]
+# series_id = { name = "...", subsector = "...", unit = "..." }
+CPIMEDSL      = { name = "CPI: Medical Care (SA)",            subsector = "prices",     unit = "Index 1982-84=100" }
+CUSR0000SAM2  = { name = "CPI: Medical Care Services (SA)",   subsector = "prices",     unit = "Index 1982-84=100" }
+CUSR0000SAM1  = { name = "CPI: Medical Care Commodities (SA)",subsector = "prices",     unit = "Index 1982-84=100" }
+CUSR0000SEMD  = { name = "CPI: Hospital & Related Services",  subsector = "prices",     unit = "Index" }
+USPCEHLTHCARE = { name = "PCE: Health Care Services",         subsector = "spending",   unit = "Bil. USD" }
+CES6562000001 = { name = "Employees: Health Care & Soc. Asst.", subsector = "labor",   unit = "Thousands" }
+CES6562100001 = { name = "Employees: Ambulatory Health Care", subsector = "labor",      unit = "Thousands" }
+JTS6200JOL    = { name = "JOLTS: Health Care Job Openings",   subsector = "labor",      unit = "Thousands" }
+PCU622622     = { name = "PPI: General Hospitals",            subsector = "prices",     unit = "Index" }
+WPUSI07003    = { name = "PPI: Pharmaceuticals",              subsector = "prices",     unit = "Index" }
+DGS10         = { name = "10-Year Treasury Yield",           subsector = "macro",      unit = "Percent" }

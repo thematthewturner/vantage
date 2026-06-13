@@ -1,0 +1,172 @@
+# Custom healthcare index membership, tagged by GICS-style sub-sector.
+# `from`/`to` bound the period a name is in the universe (to = "" means still in).
+# This structure supports survivorship-bias correction later (Phase 3) by adding
+# delisted/acquired names with a `to` date.
+
+[[security]]
+ticker = "LLY"
+name = "Eli Lilly"
+subsector = "pharma"
+from = "2010-01-01"
+
+[[security]]
+ticker = "ABBV"
+name = "AbbVie"
+subsector = "pharma"
+from = "2013-01-02"   # spun off from ABT Jan 2013
+
+[[security]]
+ticker = "MRK"
+name = "Merck"
+subsector = "pharma"
+from = "2010-01-01"
+
+[[security]]
+ticker = "PFE"
+name = "Pfizer"
+subsector = "pharma"
+from = "2010-01-01"
+
+[[security]]
+ticker = "JNJ"
+name = "Johnson & Johnson"
+subsector = "pharma"
+from = "2010-01-01"
+
+[[security]]
+ticker = "UNH"
+name = "UnitedHealth Group"
+subsector = "payers"
+from = "2010-01-01"
+
+[[security]]
+ticker = "ELV"
+name = "Elevance Health"
+subsector = "payers"
+from = "2010-01-01"
+
+[[security]]
+ticker = "CI"
+name = "Cigna"
+subsector = "payers"
+from = "2010-01-01"
+
+[[security]]
+ticker = "CVS"
+name = "CVS Health"
+subsector = "payers"
+from = "2010-01-01"
+
+[[security]]
+ticker = "HUM"
+name = "Humana"
+subsector = "payers"
+from = "2010-01-01"
+
+[[security]]
+ticker = "HCA"
+name = "HCA Healthcare"
+subsector = "providers"
+from = "2011-03-10"   # IPO Mar 2011
+
+[[security]]
+ticker = "THC"
+name = "Tenet Healthcare"
+subsector = "providers"
+from = "2010-01-01"
+
+[[security]]
+ticker = "UHS"
+name = "Universal Health Services"
+subsector = "providers"
+from = "2010-01-01"
+
+[[security]]
+ticker = "ISRG"
+name = "Intuitive Surgical"
+subsector = "devices"
+from = "2010-01-01"
+
+[[security]]
+ticker = "MDT"
+name = "Medtronic"
+subsector = "devices"
+from = "2010-01-01"
+
+[[security]]
+ticker = "ABT"
+name = "Abbott Laboratories"
+subsector = "devices"
+from = "2010-01-01"
+
+[[security]]
+ticker = "SYK"
+name = "Stryker"
+subsector = "devices"
+from = "2010-01-01"
+
+[[security]]
+ticker = "BSX"
+name = "Boston Scientific"
+subsector = "devices"
+from = "2010-01-01"
+
+[[security]]
+ticker = "AMGN"
+name = "Amgen"
+subsector = "biotech"
+from = "2010-01-01"
+
+[[security]]
+ticker = "GILD"
+name = "Gilead Sciences"
+subsector = "biotech"
+from = "2010-01-01"
+
+[[security]]
+ticker = "VRTX"
+name = "Vertex Pharmaceuticals"
+subsector = "biotech"
+from = "2010-01-01"
+
+[[security]]
+ticker = "REGN"
+name = "Regeneron Pharmaceuticals"
+subsector = "biotech"
+from = "2010-01-01"
+
+[[security]]
+ticker = "TMO"
+name = "Thermo Fisher Scientific"
+subsector = "tools"
+from = "2010-01-01"
+
+[[security]]
+ticker = "DHR"
+name = "Danaher"
+subsector = "tools"
+from = "2010-01-01"
+
+[[security]]
+ticker = "A"
+name = "Agilent Technologies"
+subsector = "tools"
+from = "2010-01-01"
+
+[[security]]
+ticker = "MCK"
+name = "McKesson"
+subsector = "distributors"
+from = "2010-01-01"
+
+[[security]]
+ticker = "COR"
+name = "Cencora (AmerisourceBergen)"
+subsector = "distributors"
+from = "2010-01-01"
+
+[[security]]
+ticker = "CAH"
+name = "Cardinal Health"
+subsector = "distributors"
+from = "2010-01-01"
