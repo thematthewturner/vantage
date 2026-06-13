@@ -19,6 +19,8 @@ notebooks. The package is the product; notebooks are thin drivers.
   providers, devices, biotech, tools, distributors).
 - **Compares** indicators against the index with mixed-frequency as-of
   alignment and an honest lead-lag correlation tool.
+- **Monitors** all of the above in a dark, multi-chart **web terminal** that
+  refreshes daily.
 
 ## Quick start
 
@@ -26,7 +28,8 @@ notebooks. The package is the product; notebooks are thin drivers.
 make setup                      # uv venv + all dependencies
 export FRED_API_KEY=...         # free key: https://fredaccount.stlouisfed.org/apikey
 make refresh                    # ingest sources, build all indices
-make lab                        # open the notebooks
+make dash                       # open the web terminal at http://localhost:8501
+make lab                        # ...or explore in the notebooks
 ```
 
 Then run `notebooks/01_explore_indicators.py` → `02_build_index.py` →
@@ -38,6 +41,35 @@ make test    # offline test suite (live API tests skipped by default)
 make lint    # ruff
 ```
 
+## Web terminal
+
+`make dash` launches a Streamlit dashboard (a thin driver over the package,
+like the notebooks) with a Bloomberg-terminal feel:
+
+- **Index** — the VHC composite (price + total return) with a range selector,
+  every sub-sector index rebased and as small multiples, a color-coded
+  performance table, and latest constituent weights.
+- **Indicators** — a card per healthcare indicator (latest, YoY, trailing
+  z-score, sparkline) grouped by sub-sector, plus a detail view.
+- **Lead-Lag** — index-vs-indicator overlays, cross-correlation by lag, an
+  all-indicator correlation heatmap, and the **honesty report** front and centre.
+- **Data health** — series freshness, staleness flags, and price coverage.
+
+Set `VANTAGE_DASHBOARD_PASSWORD` to gate it behind a single password.
+
+## Deploy (daily, on a droplet)
+
+`deploy/` ships a Docker setup that runs the terminal plus a scheduler that
+refreshes the data every day, sharing one persistent volume:
+
+```bash
+cp deploy/.env.example deploy/.env   # set FRED_API_KEY (and a password)
+make deploy                          # docker compose up -d --build
+```
+
+Full DigitalOcean walkthrough (firewall, HTTPS, day-2 ops) in
+[`deploy/README.md`](deploy/README.md).
+
 ## How it's built
 
 ```
@@ -48,8 +80,10 @@ src/vantage/
   storage/     DuckDB + immutable Parquet raw landing; point-in-time readers
   index/       cap-weighted construction, sub-sector sub-indices
   transforms/  YoY/z-score signals, as-of alignment, lead-lag correlation
-  pipeline/    ingest + refresh orchestration
+  pipeline/    ingest + refresh orchestration + daily scheduler
+  app/         the Streamlit web terminal (read-only driver over the package)
 notebooks/     thin drivers (percent format)
+deploy/        Dockerfile + compose for the droplet (web + scheduler)
 tests/         offline unit + golden-value + end-to-end tests
 ```
 
@@ -81,4 +115,5 @@ series in `config/sources.toml`. Retries and raw landing come for free.
   ClinicalTrials.gov, drug-shortage connectors; FRED/ALFRED true vintages.
 - **Phase 3:** survivorship-bias correction, corporate-action handling, insurer
   medical-loss-ratio guidance from SEC EDGAR.
-- **Phase 4:** a Streamlit dashboard over the package; cloud scheduling; alerts.
+- **Phase 4:** the Streamlit terminal and daily scheduler ship now (`app/`,
+  `deploy/`); still to come — alerts and richer cross-filtering.

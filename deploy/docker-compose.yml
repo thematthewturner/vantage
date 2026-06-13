@@ -1,0 +1,39 @@
+# vantage on a single DigitalOcean droplet:
+#   web        - the Streamlit terminal (port 80 -> 8501)
+#   scheduler  - runs the daily refresh and shares the data volume with web
+#
+#   cp deploy/.env.example deploy/.env && edit it, then:
+#   docker compose -f deploy/docker-compose.yml up -d --build
+
+name: vantage
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "${WEB_PORT:-80}:8501"
+    volumes:
+      - vantage-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8501/_stcore/health').status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  scheduler:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    command: ["python", "-m", "vantage.pipeline.scheduler"]
+    volumes:
+      - vantage-data:/app/data
+
+volumes:
+  vantage-data:
