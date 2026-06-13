@@ -36,8 +36,14 @@ def land(source: str, series_id: str, raw: object, settings: Settings | None = N
     out_path = out_dir / f"{fetched_at:%Y%m%dT%H%M%SZ}.parquet"
 
     frame = pd.DataFrame(
-        [{"source": source, "series_id": series_id,
-          "fetched_at": fetched_at, "payload": json.dumps(raw, default=str)}]
+        [
+            {
+                "source": source,
+                "series_id": series_id,
+                "fetched_at": fetched_at,
+                "payload": json.dumps(raw, default=str),
+            }
+        ]
     )
     frame.to_parquet(out_path, index=False)
     return str(out_path)

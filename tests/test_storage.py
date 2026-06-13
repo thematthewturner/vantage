@@ -11,8 +11,14 @@ def _obs(date, value, as_of):
 
 def test_migrations_create_tables(con):
     tables = {r[0] for r in con.execute("SHOW TABLES").fetchall()}
-    assert {"series_meta", "observations", "securities", "prices",
-            "index_values", "index_weights"} <= tables
+    assert {
+        "series_meta",
+        "observations",
+        "securities",
+        "prices",
+        "index_values",
+        "index_weights",
+    } <= tables
 
 
 def test_upsert_is_idempotent(con):
@@ -25,10 +31,13 @@ def test_upsert_is_idempotent(con):
 
 def test_point_in_time_excludes_future_vintages(con):
     # Same period revised: first print 100 (knowable Jan 15), revised to 105 (Feb 15).
-    upsert_observations(con, [
-        _obs(dt.date(2020, 1, 1), 100.0, dt.date(2020, 1, 15)),
-        _obs(dt.date(2020, 1, 1), 105.0, dt.date(2020, 2, 15)),
-    ])
+    upsert_observations(
+        con,
+        [
+            _obs(dt.date(2020, 1, 1), 100.0, dt.date(2020, 1, 15)),
+            _obs(dt.date(2020, 1, 1), 105.0, dt.date(2020, 2, 15)),
+        ],
+    )
     # As known on Jan 20, only the first vintage existed.
     pit = series_as_known_on(con, "FRED", "X", dt.date(2020, 1, 20))
     assert pit["value"].tolist() == [100.0]
@@ -38,9 +47,12 @@ def test_point_in_time_excludes_future_vintages(con):
 
 
 def test_last_obs_date(con):
-    upsert_observations(con, [
-        _obs(dt.date(2020, 1, 1), 1.0, dt.date(2020, 1, 1)),
-        _obs(dt.date(2020, 3, 1), 2.0, dt.date(2020, 3, 1)),
-    ])
+    upsert_observations(
+        con,
+        [
+            _obs(dt.date(2020, 1, 1), 1.0, dt.date(2020, 1, 1)),
+            _obs(dt.date(2020, 3, 1), 2.0, dt.date(2020, 3, 1)),
+        ],
+    )
     assert last_obs_date(con, "FRED", "X") == dt.date(2020, 3, 1)
     assert last_obs_date(con, "FRED", "MISSING") is None

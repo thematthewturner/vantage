@@ -31,8 +31,9 @@ vhc = index_levels(con, "VHC")
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=vhc["date"], y=vhc["level_pr"], name="VHC price return"))
 fig.add_trace(go.Scatter(x=vhc["date"], y=vhc["level_tr"], name="VHC total return"))
-fig.update_layout(title="VHC healthcare index (base = 100)", yaxis_title="Level",
-                  hovermode="x unified")
+fig.update_layout(
+    title="VHC healthcare index (base = 100)", yaxis_title="Level", hovermode="x unified"
+)
 fig.show()
 
 # %%
@@ -43,8 +44,11 @@ for sub in SUBSECTORS:
     if lv.empty:
         continue
     fig.add_trace(go.Scatter(x=lv["date"], y=lv["level_tr"], name=sub))
-fig.update_layout(title="Healthcare sub-sector indices (total return, base = 100)",
-                  yaxis_title="Level", hovermode="x unified")
+fig.update_layout(
+    title="Healthcare sub-sector indices (total return, base = 100)",
+    yaxis_title="Level",
+    hovermode="x unified",
+)
 fig.show()
 
 # %%

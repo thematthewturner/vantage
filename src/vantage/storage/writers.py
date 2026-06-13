@@ -8,8 +8,9 @@ import pandas as pd
 from vantage.schema import Observation, SeriesMeta
 
 
-def upsert_series_meta(con: duckdb.DuckDBPyConnection, meta: SeriesMeta,
-                       first_obs=None, last_obs=None) -> None:
+def upsert_series_meta(
+    con: duckdb.DuckDBPyConnection, meta: SeriesMeta, first_obs=None, last_obs=None
+) -> None:
     con.execute(
         """
         INSERT INTO series_meta
@@ -26,8 +27,17 @@ def upsert_series_meta(con: duckdb.DuckDBPyConnection, meta: SeriesMeta,
             last_obs    = excluded.last_obs,
             last_fetched = now()
         """,
-        [meta.source, meta.series_id, meta.metric_name, meta.frequency.value,
-         meta.unit, meta.subsector, meta.notes, first_obs, last_obs],
+        [
+            meta.source,
+            meta.series_id,
+            meta.metric_name,
+            meta.frequency.value,
+            meta.unit,
+            meta.subsector,
+            meta.notes,
+            first_obs,
+            last_obs,
+        ],
     )
 
 
@@ -79,14 +89,21 @@ def upsert_securities(con: duckdb.DuckDBPyConnection, securities: list[dict]) ->
                 to_date = excluded.to_date,
                 notes = excluded.notes
             """,
-            [sec["ticker"], sec.get("name"), sec.get("subsector"),
-             sec.get("from") or None, sec.get("to") or None, sec.get("notes")],
+            [
+                sec["ticker"],
+                sec.get("name"),
+                sec.get("subsector"),
+                sec.get("from") or None,
+                sec.get("to") or None,
+                sec.get("notes"),
+            ],
         )
     return len(securities)
 
 
-def write_index(con: duckdb.DuckDBPyConnection, index_id: str,
-                levels: pd.DataFrame, weights: pd.DataFrame) -> None:
+def write_index(
+    con: duckdb.DuckDBPyConnection, index_id: str, levels: pd.DataFrame, weights: pd.DataFrame
+) -> None:
     """Replace stored values/weights for one index id (full recompute each build)."""
     con.execute("DELETE FROM index_values WHERE index_id = ?", [index_id])
     con.execute("DELETE FROM index_weights WHERE index_id = ?", [index_id])
@@ -94,13 +111,15 @@ def write_index(con: duckdb.DuckDBPyConnection, index_id: str,
         con.register("_lv", levels)
         con.execute(
             "INSERT INTO index_values (index_id, date, level_pr, level_tr) "
-            "SELECT ?, date, level_pr, level_tr FROM _lv", [index_id]
+            "SELECT ?, date, level_pr, level_tr FROM _lv",
+            [index_id],
         )
         con.unregister("_lv")
     if not weights.empty:
         con.register("_wt", weights)
         con.execute(
             "INSERT INTO index_weights (index_id, rebalance_date, ticker, weight) "
-            "SELECT ?, rebalance_date, ticker, weight FROM _wt", [index_id]
+            "SELECT ?, rebalance_date, ticker, weight FROM _wt",
+            [index_id],
         )
         con.unregister("_wt")

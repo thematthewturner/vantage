@@ -57,13 +57,17 @@ def honesty_report(result: pd.DataFrame, *, n_indicators_tested: int = 1) -> dic
         "combinations_tested": combinations,
         "small_sample": min_n < 30,
         "warnings": [
-            w for w in [
+            w
+            for w in [
                 "Small effective sample (<30) at one or more lags; correlations unstable."
-                if min_n < 30 else None,
+                if min_n < 30
+                else None,
                 f"{combinations} indicator x lag combinations tested; expect spurious "
                 "'significant' hits by chance. Prefer a pre-registered hypothesis."
-                if combinations > 20 else None,
+                if combinations > 20
+                else None,
                 "Exploratory only -- not a predictive or trading signal.",
-            ] if w
+            ]
+            if w
         ],
     }

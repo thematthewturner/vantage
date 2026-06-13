@@ -10,8 +10,19 @@ from __future__ import annotations
 import pandas as pd
 
 # periods per year by pandas-inferred frequency, for period-aware YoY
-_PERIODS_PER_YEAR = {"D": 252, "B": 252, "W": 52, "M": 12, "MS": 12,
-                     "Q": 4, "QS": 4, "A": 1, "AS": 1, "Y": 1, "YS": 1}
+_PERIODS_PER_YEAR = {
+    "D": 252,
+    "B": 252,
+    "W": 52,
+    "M": 12,
+    "MS": 12,
+    "Q": 4,
+    "QS": 4,
+    "A": 1,
+    "AS": 1,
+    "Y": 1,
+    "YS": 1,
+}
 
 
 def _periods_per_year(series: pd.Series, default: int = 12) -> int:

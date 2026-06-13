@@ -34,7 +34,9 @@ def build_all_indices(
             continue
         index_id = index_id_for(subsector)
         levels, weights = build_index(
-            index_id, mem, prices,
+            index_id,
+            mem,
+            prices,
             base_value=settings.index_base_value,
             base_date=settings.index_base_date,
             rebalance=settings.rebalance,

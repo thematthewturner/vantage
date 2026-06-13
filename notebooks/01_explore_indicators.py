@@ -45,8 +45,7 @@ for series_id, label in SERIES.items():
     s = df.set_index("date")["value"]
     fig.add_trace(go.Scatter(x=s.index, y=yoy(s) * 100, name=label, mode="lines"))
 
-fig.update_layout(title="Healthcare trackers, YoY %", yaxis_title="YoY %",
-                  hovermode="x unified")
+fig.update_layout(title="Healthcare trackers, YoY %", yaxis_title="YoY %", hovermode="x unified")
 fig.show()
 
 # %%

@@ -26,8 +26,7 @@ def main(argv: list[str] | None = None) -> int:
     con = connect(settings)
 
     ind = ingest_indicators(con, settings)
-    log.info("indicators: %d series updated, %d errors",
-             len(ind["counts"]), len(ind["errors"]))
+    log.info("indicators: %d series updated, %d errors", len(ind["counts"]), len(ind["errors"]))
 
     price_errors: dict = {}
     if not skip_prices:

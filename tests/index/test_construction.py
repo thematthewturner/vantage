@@ -25,19 +25,25 @@ MEMBERS = [
 
 def _prices():
     rows = [
-        ("A", "2020-01-01", 10.0, 10), ("B", "2020-01-01", 20.0, 10),
-        ("A", "2020-01-02", 11.0, 10), ("B", "2020-01-02", 20.0, 10),
-        ("A", "2020-01-03", 11.0, 10), ("B", "2020-01-03", 22.0, 10),
+        ("A", "2020-01-01", 10.0, 10),
+        ("B", "2020-01-01", 20.0, 10),
+        ("A", "2020-01-02", 11.0, 10),
+        ("B", "2020-01-02", 20.0, 10),
+        ("A", "2020-01-03", 11.0, 10),
+        ("B", "2020-01-03", 22.0, 10),
     ]
     return pd.DataFrame(
-        [{"ticker": t, "date": d, "close": c, "adj_close": c, "shares_out": s}
-         for t, d, c, s in rows]
+        [
+            {"ticker": t, "date": d, "close": c, "adj_close": c, "shares_out": s}
+            for t, d, c, s in rows
+        ]
     )
 
 
 def test_levels_match_hand_computation():
-    levels, weights = build_index("VHC_TEST", MEMBERS, _prices(),
-                                  base_value=100.0, base_date=dt.date(2020, 1, 1))
+    levels, weights = build_index(
+        "VHC_TEST", MEMBERS, _prices(), base_value=100.0, base_date=dt.date(2020, 1, 1)
+    )
     pr = levels["level_pr"].tolist()
     assert abs(pr[0] - 100.0) < 1e-9
     assert abs(pr[1] - 310.0 / 3.0) < 1e-9
@@ -47,8 +53,9 @@ def test_levels_match_hand_computation():
 
 
 def test_rebalance_weights_are_cap_weighted():
-    _, weights = build_index("VHC_TEST", MEMBERS, _prices(),
-                             base_value=100.0, base_date=dt.date(2020, 1, 1))
+    _, weights = build_index(
+        "VHC_TEST", MEMBERS, _prices(), base_value=100.0, base_date=dt.date(2020, 1, 1)
+    )
     first = weights[weights["rebalance_date"] == dt.date(2020, 1, 1)].set_index("ticker")["weight"]
     assert abs(first["A"] - 1 / 3) < 1e-9
     assert abs(first["B"] - 2 / 3) < 1e-9

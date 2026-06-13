@@ -24,10 +24,10 @@ def test_zscore_is_trailing():
 
 
 def test_asof_align_never_looks_ahead():
-    index = pd.Series([1.0, 1.0, 1.0],
-                      index=pd.to_datetime(["2020-01-10", "2020-01-20", "2020-02-10"]))
-    indicator = pd.Series([10.0, 20.0],
-                          index=pd.to_datetime(["2020-01-01", "2020-02-01"]))
+    index = pd.Series(
+        [1.0, 1.0, 1.0], index=pd.to_datetime(["2020-01-10", "2020-01-20", "2020-02-10"])
+    )
+    indicator = pd.Series([10.0, 20.0], index=pd.to_datetime(["2020-01-01", "2020-02-01"]))
     out = asof_align(index, indicator)
     # Jan dates only see the Jan-01 print; Feb-10 sees the Feb-01 print.
     assert out["indicator"].tolist() == [10.0, 10.0, 20.0]

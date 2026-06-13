@@ -51,8 +51,13 @@ def _eligible(members: list[dict], on: pd.Timestamp) -> set[str]:
     return out
 
 
-def _chain(price: pd.DataFrame, mktcap: pd.DataFrame, members: list[dict],
-           rebal_dates: list[pd.Timestamp], base_value: float) -> pd.Series:
+def _chain(
+    price: pd.DataFrame,
+    mktcap: pd.DataFrame,
+    members: list[dict],
+    rebal_dates: list[pd.Timestamp],
+    base_value: float,
+) -> pd.Series:
     """Chain one return track to a base-value level series."""
     returns = price.pct_change()
     rebal = set(rebal_dates)
@@ -95,9 +100,15 @@ def _target_weights(mktcap: pd.DataFrame, members: list[dict], day: pd.Timestamp
     return caps / caps.sum()
 
 
-def build_index(index_id: str, members: list[dict], prices: pd.DataFrame, *,
-                base_value: float = 100.0, base_date: dt.date | None = None,
-                rebalance: str = "Q") -> tuple[pd.DataFrame, pd.DataFrame]:
+def build_index(
+    index_id: str,
+    members: list[dict],
+    prices: pd.DataFrame,
+    *,
+    base_value: float = 100.0,
+    base_date: dt.date | None = None,
+    rebalance: str = "Q",
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Build one index. Returns (levels, weights).
 
     levels columns: date, level_pr, level_tr
@@ -125,15 +136,19 @@ def build_index(index_id: str, members: list[dict], prices: pd.DataFrame, *,
     level_tr = _chain(adj, mktcap, members, rebal_dates, base_value)
 
     levels = pd.DataFrame(
-        {"date": level_pr.index.date, "level_pr": level_pr.to_numpy(),
-         "level_tr": level_tr.to_numpy()}
+        {
+            "date": level_pr.index.date,
+            "level_pr": level_pr.to_numpy(),
+            "level_tr": level_tr.to_numpy(),
+        }
     )
 
     wt_rows = []
     for day in rebal_dates:
         w = _target_weights(mktcap, members, day)
         for ticker, weight in w.items():
-            wt_rows.append({"rebalance_date": day.date(), "ticker": ticker,
-                            "weight": float(weight)})
+            wt_rows.append(
+                {"rebalance_date": day.date(), "ticker": ticker, "weight": float(weight)}
+            )
     weights = pd.DataFrame(wt_rows, columns=["rebalance_date", "ticker", "weight"])
     return levels, weights

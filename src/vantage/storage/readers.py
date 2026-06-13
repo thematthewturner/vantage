@@ -30,8 +30,9 @@ def current_series(con: duckdb.DuckDBPyConnection, source: str, series_id: str) 
     ).df()
 
 
-def series_as_known_on(con: duckdb.DuckDBPyConnection, source: str, series_id: str,
-                       known_date: dt.date) -> pd.DataFrame:
+def series_as_known_on(
+    con: duckdb.DuckDBPyConnection, source: str, series_id: str, known_date: dt.date
+) -> pd.DataFrame:
     """Point-in-time view: each period's value as it was knowable on `known_date`.
 
     Uses only vintages published on or before `known_date`, so backtests never

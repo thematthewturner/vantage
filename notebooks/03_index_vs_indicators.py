@@ -37,10 +37,10 @@ indicator.index = pd.to_datetime(indicator.index)
 aligned = asof_align(vhc, indicator, index_name="VHC", indicator_name=INDICATOR[2])
 
 fig = make_subplots(specs=[[{"secondary_y": True}]])
-fig.add_trace(go.Scatter(x=aligned.index, y=aligned["VHC"], name="VHC (TR)"),
-              secondary_y=False)
-fig.add_trace(go.Scatter(x=aligned.index, y=aligned[INDICATOR[2]], name=INDICATOR[2]),
-              secondary_y=True)
+fig.add_trace(go.Scatter(x=aligned.index, y=aligned["VHC"], name="VHC (TR)"), secondary_y=False)
+fig.add_trace(
+    go.Scatter(x=aligned.index, y=aligned[INDICATOR[2]], name=INDICATOR[2]), secondary_y=True
+)
 fig.update_layout(title=f"VHC vs {INDICATOR[2]}", hovermode="x unified")
 fig.show()
 
@@ -51,8 +51,11 @@ ind_m = indicator.resample("MS").last()
 res = lead_lag(yoy(ind_m), yoy(vhc_m), max_lag=12)
 
 fig = go.Figure(go.Bar(x=res["lag"], y=res["corr"]))
-fig.update_layout(title=f"Lead-lag: {INDICATOR[2]} YoY vs VHC YoY",
-                  xaxis_title="lag (months; + = indicator leads)", yaxis_title="correlation")
+fig.update_layout(
+    title=f"Lead-lag: {INDICATOR[2]} YoY vs VHC YoY",
+    xaxis_title="lag (months; + = indicator leads)",
+    yaxis_title="correlation",
+)
 fig.show()
 
 # %%
