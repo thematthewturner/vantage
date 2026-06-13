@@ -26,6 +26,7 @@ class Settings:
     raw_dir: Path
     index_base_value: float
     index_base_date: dt.date
+    index_baseline_start_date: dt.date
     rebalance: str
 
     @classmethod
@@ -38,6 +39,9 @@ class Settings:
             raw_dir=REPO_ROOT / storage["raw_dir"],
             index_base_value=float(index["base_value"]),
             index_base_date=dt.date.fromisoformat(index["base_date"]),
+            index_baseline_start_date=dt.date.fromisoformat(
+                index.get("baseline_start_date", index["base_date"])
+            ),
             rebalance=index["rebalance"],
         )
 

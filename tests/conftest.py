@@ -13,6 +13,7 @@ def settings(tmp_path) -> Settings:
         raw_dir=tmp_path / "raw",
         index_base_value=100.0,
         index_base_date=dt.date(2020, 1, 1),
+        index_baseline_start_date=dt.date(1998, 12, 22),
         rebalance="Q",
     )
 

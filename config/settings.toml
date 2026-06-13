@@ -5,5 +5,6 @@ raw_dir = "data/raw"
 
 [index]
 base_value = 100.0
-base_date = "2015-01-02"   # index inception; first trading day with full data
+base_date = "2010-01-04"   # custom VHC inception; first 2010 trading day
+baseline_start_date = "1998-12-22" # start fetching benchmark ETF history (XLV inception)
 rebalance = "Q"            # quarterly

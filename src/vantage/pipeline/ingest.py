@@ -14,6 +14,7 @@ import duckdb
 from vantage.config import Settings, load_universe
 from vantage.connectors import REGISTRY
 from vantage.connectors.prices_yf import fetch_prices
+from vantage.index.baselines import baseline_tickers
 from vantage.index.universe import tickers
 from vantage.storage import raw, writers
 from vantage.storage.readers import last_obs_date
@@ -54,7 +55,8 @@ def ingest_prices(con: duckdb.DuckDBPyConnection, settings: Settings | None = No
     settings = settings or Settings.load()
     writers.upsert_securities(con, load_universe())
     try:
-        frame = fetch_prices(tickers(), settings.index_base_date)
+        all_tickers = sorted({*tickers(), *baseline_tickers()})
+        frame = fetch_prices(all_tickers, settings.index_baseline_start_date)
         n = writers.upsert_prices(con, frame)
         return {"rows": n, "errors": {}}
     except Exception as exc:
