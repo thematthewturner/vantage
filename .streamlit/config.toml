@@ -1,0 +1,17 @@
+# Dark "terminal" theme + server defaults for container deployment.
+[theme]
+base = "dark"
+primaryColor = "#ffb000"          # amber accent
+backgroundColor = "#0b0f17"
+secondaryBackgroundColor = "#0e131d"
+textColor = "#c8d0dc"
+font = "monospace"
+
+[server]
+headless = true
+address = "0.0.0.0"
+port = 8501
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
