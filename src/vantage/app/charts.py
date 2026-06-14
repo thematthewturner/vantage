@@ -182,6 +182,16 @@ def correlation_heatmap(matrix: pd.DataFrame, title: str) -> go.Figure:
     return fig
 
 
+def movers_bar(movers: pd.DataFrame, title: str) -> go.Figure:
+    """Horizontal %-return bars per constituent; green for up, red for down."""
+    m = movers.sort_values("return_pct")
+    colors = [GREEN if v >= 0 else RED for v in m["return_pct"]]
+    fig = go.Figure(go.Bar(x=m["return_pct"], y=m["ticker"], orientation="h", marker_color=colors))
+    fig = _style(fig, height=max(240, 20 * len(m) + 80), title=title)
+    fig.update_xaxes(title="return (%)")
+    return fig
+
+
 def weights_bar(weights: pd.DataFrame, title: str) -> go.Figure:
     """Horizontal constituent-weight bars at the latest rebalance."""
     w = weights.sort_values("weight")
