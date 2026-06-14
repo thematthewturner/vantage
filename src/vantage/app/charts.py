@@ -95,6 +95,19 @@ def overlay_chart(frame: pd.DataFrame, title: str) -> go.Figure:
     return _style(fig, height=420, title=title)
 
 
+def relative_chart(series: pd.Series, title: str, *, base: float = 100.0) -> go.Figure:
+    """Relative-strength line; the dashed baseline marks parity (above = ahead)."""
+    s = series.dropna()
+    fig = go.Figure(
+        go.Scatter(
+            x=s.index, y=s.values, name="relative strength", line=dict(color=AMBER, width=2)
+        )
+    )
+    fig = _style(fig, height=320, title=title)
+    fig.add_hline(y=base, line=dict(color=CYAN, width=1, dash="dot"))
+    return fig
+
+
 def sparkline(series: pd.Series) -> go.Figure:
     """Tiny axis-free line for an indicator card; green/red by net direction."""
     s = series.dropna()

@@ -61,3 +61,18 @@ def diffusion(frame: pd.DataFrame) -> pd.Series:
     """Breadth: share of component series rising vs the prior period (0..1)."""
     rising = frame.diff() > 0
     return rising.sum(axis=1) / frame.notna().sum(axis=1)
+
+
+def relative_strength(series: pd.Series, benchmark: pd.Series, *, base: float = 100.0) -> pd.Series:
+    """Relative-strength line of ``series`` against ``benchmark``, rebased to ``base``.
+
+    Aligned on their common dates, then ``series / benchmark`` is normalised so
+    the line starts at ``base``. A rising line means ``series`` is outperforming
+    the benchmark; falling means it is lagging. Only trailing information is
+    used, so the value at time t is knowable at time t.
+    """
+    pair = pd.concat([series.rename("a"), benchmark.rename("b")], axis=1).dropna()
+    if pair.empty:
+        return pd.Series(dtype=float)
+    ratio = pair["a"] / pair["b"]
+    return ratio / ratio.iloc[0] * base
