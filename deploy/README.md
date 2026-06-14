@@ -74,6 +74,29 @@ The data lives in the `vantage-data` volume and survives rebuilds. Because the
 whole store is rebuildable from the raw Parquet landing, a backup is just a copy
 of that volume.
 
+## Hands-off deploys (GitHub Actions)
+
+`.github/workflows/deploy.yml` SSHes into the droplet and runs the day-2
+update for you — automatically on every push to `main`, or on demand from the
+Actions tab (you can point a manual run at any branch). It expects the stack to
+already be bootstrapped on the droplet (steps 1–4 above, done once).
+
+One-time setup:
+
+1. **Repository secrets** (Settings → Secrets and variables → Actions):
+   - `DROPLET_HOST` — droplet IP/hostname (e.g. `165.227.95.213`)
+   - `DROPLET_USER` — SSH user (e.g. `root`)
+   - `DROPLET_SSH_KEY` — a private key whose public half is in the droplet's
+     `~/.ssh/authorized_keys`
+   - `DROPLET_SSH_PORT` — optional, defaults to `22`
+2. **On the droplet**, make sure the repo is cloned to `~/vantage` and
+   `deploy/.env` exists (it is gitignored and never passes through CI, so the
+   workflow reuses whatever you set in step 2 above). If `~/vantage` is missing,
+   the workflow clones it on first run; `deploy/.env` you must create yourself.
+
+Each run does `git pull --ff-only` then
+`docker compose -f deploy/docker-compose.yml up -d --build` on the droplet.
+
 ## HTTPS (optional)
 
 To serve over TLS with your own domain, put a reverse proxy in front. The

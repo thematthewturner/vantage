@@ -1,0 +1,82 @@
+name: Deploy
+
+# Deploys vantage to the DigitalOcean droplet over SSH and (re)builds the
+# Docker compose stack. Runs automatically when main moves, and can be kicked
+# off by hand (optionally against another branch) from the Actions tab.
+#
+# One-time setup — add these repository secrets (Settings -> Secrets and
+# variables -> Actions):
+#   DROPLET_HOST     droplet IP or hostname (e.g. 165.227.95.213)
+#   DROPLET_USER     SSH user (e.g. root)
+#   DROPLET_SSH_KEY  a private key whose public half is in the droplet's
+#                    ~/.ssh/authorized_keys
+# Optional:
+#   DROPLET_SSH_PORT SSH port (defaults to 22)
+#
+# And once, on the droplet itself, create the secrets file the stack reads
+# (it is gitignored and never travels through CI):
+#   cd ~/vantage && cp deploy/.env.example deploy/.env && nano deploy/.env
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch or tag to deploy"
+        required: false
+        default: main
+
+concurrency:
+  group: deploy-droplet
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        env:
+          SSH_KEY: ${{ secrets.DROPLET_SSH_KEY }}
+          HOST: ${{ secrets.DROPLET_HOST }}
+          USER: ${{ secrets.DROPLET_USER }}
+          PORT: ${{ secrets.DROPLET_SSH_PORT }}
+          REF: ${{ github.event.inputs.ref || github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [ -z "${HOST}" ] || [ -z "${USER}" ] || [ -z "${SSH_KEY}" ]; then
+            echo "::error::Missing DROPLET_HOST / DROPLET_USER / DROPLET_SSH_KEY secrets." >&2
+            exit 1
+          fi
+          PORT="${PORT:-22}"
+
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -p "$PORT" -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          ssh -i ~/.ssh/id_deploy -p "$PORT" "$USER@$HOST" "REF='${REF}' bash -s" <<'REMOTE'
+          set -euo pipefail
+          REF="${REF:-main}"
+          REPO_DIR="${VANTAGE_DIR:-$HOME/vantage}"
+
+          if [ ! -d "$REPO_DIR/.git" ]; then
+            git clone https://github.com/thematthewturner/vantage.git "$REPO_DIR"
+          fi
+          cd "$REPO_DIR"
+
+          git fetch --prune origin
+          git checkout "$REF"
+          git pull --ff-only origin "$REF"
+
+          if [ ! -f deploy/.env ]; then
+            echo "ERROR: deploy/.env is missing on the droplet." >&2
+            echo "Create it once: cp deploy/.env.example deploy/.env && edit it." >&2
+            exit 1
+          fi
+
+          docker compose -f deploy/docker-compose.yml up -d --build
+          docker compose -f deploy/docker-compose.yml ps
+          REMOTE
+
+          echo "Deployed ${REF} to ${HOST}."
