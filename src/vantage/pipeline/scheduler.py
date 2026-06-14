@@ -20,7 +20,7 @@ import os
 import time
 
 from vantage.config import Settings
-from vantage.pipeline import refresh
+from vantage.pipeline import alerts, refresh
 
 log = logging.getLogger("vantage.scheduler")
 
@@ -76,9 +76,15 @@ def main() -> int:
     if _should_refresh_on_start():
         log.info("running initial refresh (store empty or REFRESH_ON_START set)")
         try:
-            refresh.main([])
+            code = refresh.main([])
+            if code:
+                alerts.notify(
+                    f"vantage: initial refresh exited {code} (one or more sources failed). "
+                    "Check scheduler logs."
+                )
         except Exception:  # never let a bad run kill the loop
             log.exception("initial refresh failed")
+            alerts.notify("vantage: initial refresh crashed. Check scheduler logs.")
 
     while True:
         wait = seconds_until(hour)
@@ -88,8 +94,16 @@ def main() -> int:
         try:
             code = refresh.main([])
             log.info("refresh finished with exit code %d", code)
+            if code:
+                alerts.notify(
+                    f"vantage: daily refresh exited {code} (one or more sources failed). "
+                    "Check scheduler logs."
+                )
         except Exception:
             log.exception("daily refresh failed; will retry tomorrow")
+            alerts.notify(
+                "vantage: daily refresh crashed; will retry tomorrow. Check scheduler logs."
+            )
         # Guard against a fast refresh re-triggering within the same hour.
         time.sleep(60)
 
