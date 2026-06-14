@@ -46,6 +46,32 @@ def test_indicator_snapshot_empty():
     assert snap["latest"] is None and snap["yoy"] is None
 
 
+def test_constituent_returns_ranks_and_signs():
+    idx = pd.date_range("2024-01-01", periods=400, freq="D")
+    # AAA rises, BBB flat, CCC falls over the window.
+    prices = pd.DataFrame(
+        {
+            "AAA": np.linspace(100, 200, 400),
+            "BBB": np.full(400, 50.0),
+            "CCC": np.linspace(80, 40, 400),
+        },
+        index=idx,
+    )
+    rets = data.constituent_returns(prices, window_days=365)
+    # Sorted best-to-worst, with the expected signs.
+    assert list(rets.index) == ["AAA", "BBB", "CCC"]
+    assert rets["AAA"] > 0 and rets["CCC"] < 0
+    assert abs(rets["BBB"]) < 1e-9
+
+
+def test_constituent_returns_empty_and_short_history():
+    assert data.constituent_returns(pd.DataFrame(), 30).empty
+    # A ticker whose entire history sits inside the window has no base -> dropped.
+    idx = pd.date_range("2024-06-01", periods=10, freq="D")
+    prices = pd.DataFrame({"ZZZ": np.arange(1.0, 11.0)}, index=idx)
+    assert "ZZZ" not in data.constituent_returns(prices, window_days=365).index
+
+
 def test_staleness():
     today = dt.date(2026, 6, 13)
     fresh = dt.date(2026, 5, 1)

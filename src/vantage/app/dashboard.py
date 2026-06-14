@@ -176,6 +176,45 @@ def tab_index() -> None:
                     key=f"sm_{col}",
                 )
 
+    st.markdown("#### Constituent movers")
+    st.caption("Best and worst performers among the current VHC constituents over the window.")
+    windows = {"1W": 7, "1M": 30, "3M": 91, "6M": 182, "1Y": 365}
+    wlabel = st.radio("Window", list(windows), horizontal=True, index=1, key="movers_window")
+    rets = data.constituent_returns(data.constituent_prices("VHC"), windows[wlabel])
+    if rets.empty:
+        st.caption("Not enough price history yet for movers.")
+    else:
+        meta = data.latest_weights("VHC").set_index("ticker")
+        movers = rets.rename("return_pct").to_frame()
+        movers.index.name = "ticker"
+        movers["name"] = meta["name"].reindex(movers.index)
+        movers["subsector"] = meta["subsector"].reindex(movers.index)
+        movers = movers.reset_index()
+        n = min(10, len(movers))
+        gainers = movers.head(n)
+        losers = movers.tail(n).iloc[::-1]
+        mc1, mc2 = st.columns([1, 1])
+        mc1.plotly_chart(
+            charts.movers_bar(gainers, f"Top {n} gainers — {wlabel}"),
+            width="stretch",
+            config=_NO_MODEBAR,
+        )
+        mc2.plotly_chart(
+            charts.movers_bar(losers, f"Top {n} losers — {wlabel}"),
+            width="stretch",
+            config=_NO_MODEBAR,
+        )
+        show = movers.assign(**{"return %": movers["return_pct"]})[
+            ["ticker", "name", "subsector", "return %"]
+        ]
+        st.dataframe(
+            show.style.format({"return %": "{:+.2f}%"}, na_rep="--").map(
+                _pct_color, subset=["return %"]
+            ),
+            width="stretch",
+            hide_index=True,
+        )
+
     st.markdown("#### Latest constituent weights")
     pick = st.selectbox("Index", indices, format_func=_index_label, key="weights_index")
     w = data.latest_weights(pick)

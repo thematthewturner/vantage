@@ -26,7 +26,7 @@ import streamlit as st
 
 from vantage.config import Settings
 from vantage.index.universe import SUBSECTORS, index_id_for
-from vantage.storage.readers import current_series, index_levels
+from vantage.storage.readers import current_series, index_levels, prices_wide
 from vantage.transforms.signals import relative_strength, yoy, zscore
 
 # How long a query result is reused before we hit DuckDB again. The data only
@@ -174,6 +174,28 @@ def latest_weights(index_id: str) -> pd.DataFrame:
     )
 
 
+@st.cache_data(ttl=CACHE_TTL)
+def constituent_prices(index_id: str) -> pd.DataFrame:
+    """Adjusted-close prices for the current constituents of `index_id`.
+
+    A date-indexed wide frame (one column per current constituent). Empty if the
+    index has no weights yet or no prices are stored.
+    """
+    weights = latest_weights(index_id)
+    if weights.empty:
+        return pd.DataFrame()
+    tickers = set(weights["ticker"])
+    px = _run("px:adj_close", lambda con: prices_wide(con, "adj_close"))
+    if px.empty:
+        return px
+    cols = [c for c in px.columns if c in tickers]
+    if not cols:
+        return pd.DataFrame()
+    px = px[cols].copy()
+    px.index = pd.to_datetime(px.index)
+    return px.sort_index()
+
+
 def rebased_pair(index_id: str, benchmark_id: str, track: str = "level_tr") -> pd.DataFrame:
     """`index_id` and `benchmark_id` levels rebased to 100 at their common start.
 
@@ -262,6 +284,30 @@ def performance_summary(series: pd.Series) -> dict[str, float | None]:
         base = _asof_value(s, start)
         out[label] = (last_val / base - 1.0) * 100.0 if base else None
     return out
+
+
+def constituent_returns(prices: pd.DataFrame, window_days: int) -> pd.Series:
+    """Per-ticker % return over the trailing `window_days`, point-in-time.
+
+    `prices` is a date-indexed wide frame (one column per ticker). For each
+    ticker the latest available price is compared to the last price at or before
+    ``latest_date - window_days`` (no interpolation). Tickers without history on
+    both ends are dropped. Returned sorted best-to-worst.
+    """
+    if prices is None or prices.empty:
+        return pd.Series(dtype=float)
+    frame = prices.sort_index()
+    start = frame.index.max() - pd.Timedelta(days=window_days)
+    out: dict[str, float] = {}
+    for ticker in frame.columns:
+        s = frame[ticker].dropna()
+        if s.empty:
+            continue
+        base = _asof_value(s, start)
+        if not base:  # None or 0 -> no usable base price
+            continue
+        out[ticker] = (float(s.iloc[-1]) / base - 1.0) * 100.0
+    return pd.Series(out, dtype=float).sort_values(ascending=False)
 
 
 def indicator_snapshot(series: pd.Series, frequency: str | None) -> dict:
