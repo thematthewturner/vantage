@@ -19,6 +19,34 @@ import pandas as pd
 PRICE_COLUMNS = ["ticker", "date", "close", "adj_close", "shares_out"]
 
 
+def sanitize_prices(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Split a price frame into clean rows and rejected rows.
+
+    A single bad print (a null or non-positive ``close``/``adj_close``) corrupts
+    the index: it feeds cap weights and ``pct_change``, where a zero produces an
+    infinite return. We quarantine those rows rather than write them, so one bad
+    upstream value can't silently distort the index level.
+
+    Returns ``(clean, rejected)``; ``rejected`` carries a ``reason`` column.
+    """
+    if frame.empty:
+        return frame, frame.assign(reason=pd.Series(dtype="object"))
+
+    close = pd.to_numeric(frame["close"], errors="coerce")
+    adj = pd.to_numeric(frame["adj_close"], errors="coerce")
+    bad_close = close.isna() | (close <= 0)
+    bad_adj = adj.isna() | (adj <= 0)
+    bad = bad_close | bad_adj
+
+    reason = pd.Series("", index=frame.index, dtype="object")
+    reason[bad_close] = "non-positive or null close"
+    reason[bad_adj & ~bad_close] = "non-positive or null adj_close"
+
+    clean = frame[~bad].copy()
+    rejected = frame[bad].assign(reason=reason[bad])
+    return clean, rejected
+
+
 def _shares_outstanding(ticker_obj, index: pd.DatetimeIndex) -> pd.Series:
     """Best-effort historical shares outstanding aligned to `index`.
 

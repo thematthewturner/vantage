@@ -13,7 +13,7 @@ import duckdb
 
 from vantage.config import Settings, load_universe
 from vantage.connectors import REGISTRY
-from vantage.connectors.prices_yf import fetch_prices
+from vantage.connectors.prices_yf import fetch_prices, sanitize_prices
 from vantage.index.baselines import baseline_tickers
 from vantage.index.universe import tickers
 from vantage.storage import raw, writers
@@ -57,8 +57,15 @@ def ingest_prices(con: duckdb.DuckDBPyConnection, settings: Settings | None = No
     try:
         all_tickers = sorted({*tickers(), *baseline_tickers()})
         frame = fetch_prices(all_tickers, settings.index_baseline_start_date)
+        frame, rejected = sanitize_prices(frame)
+        if not rejected.empty:
+            log.warning(
+                "dropped %d price rows failing sanity checks (e.g. %s)",
+                len(rejected),
+                sorted(rejected["ticker"].unique())[:5],
+            )
         n = writers.upsert_prices(con, frame)
-        return {"rows": n, "errors": {}}
+        return {"rows": n, "errors": {}, "rejected": len(rejected)}
     except Exception as exc:
         log.warning("price ingest failed: %s", exc)
         return {"rows": 0, "errors": {"prices": str(exc)}}
