@@ -56,7 +56,7 @@ def _index_label(index_id: str) -> str:
     if index_id.startswith("BASE_"):
         meta = BASELINE_INDEXES.get(index_id)
         return meta["ticker"] if meta else index_id.replace("BASE_", "")
-    return index_id.replace("VHC_", "").title()
+    return index_id.replace("VHC_", "").replace("_", " ").title()
 
 
 def _fmt_pct(x: float | None) -> str:
@@ -168,7 +168,7 @@ def tab_index() -> None:
         grid = st.columns(4)
         for i, col in enumerate(subs.columns):
             with grid[i % 4]:
-                st.caption(col.title())
+                st.caption(col.replace("_", " ").title())
                 st.plotly_chart(
                     charts.sparkline(subs[col]),
                     width="stretch",

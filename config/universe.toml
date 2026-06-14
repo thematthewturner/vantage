@@ -170,3 +170,110 @@ ticker = "CAH"
 name = "Cardinal Health"
 subsector = "distributors"
 from = "2010-01-01"
+
+# --- Digital health / health-tech ------------------------------------------
+# Mostly 2019-2021+ IPOs, so `from` bounds each name's index entry; the index
+# (cap-weighted, base 2015) simply admits them at their listing date, and the
+# forecast/backtest needs ~3y of monthly history before a name scores well.
+
+[[security]]
+ticker = "VEEV"
+name = "Veeva Systems"
+subsector = "digital_health"
+from = "2013-10-16"
+
+[[security]]
+ticker = "TDOC"
+name = "Teladoc Health"
+subsector = "digital_health"
+from = "2015-07-01"
+
+[[security]]
+ticker = "EVH"
+name = "Evolent Health"
+subsector = "digital_health"
+from = "2015-06-05"
+
+[[security]]
+ticker = "OMCL"
+name = "Omnicell"
+subsector = "digital_health"
+from = "2010-01-01"
+
+[[security]]
+ticker = "PHR"
+name = "Phreesia"
+subsector = "digital_health"
+from = "2019-07-18"
+
+[[security]]
+ticker = "HCAT"
+name = "Health Catalyst"
+subsector = "digital_health"
+from = "2019-07-25"
+
+[[security]]
+ticker = "SDGR"
+name = "Schrödinger"
+subsector = "digital_health"
+from = "2020-02-06"
+
+[[security]]
+ticker = "GDRX"
+name = "GoodRx"
+subsector = "digital_health"
+from = "2020-09-23"
+
+[[security]]
+ticker = "CERT"
+name = "Certara"
+subsector = "digital_health"
+from = "2020-12-11"
+
+[[security]]
+ticker = "HIMS"
+name = "Hims & Hers Health"
+subsector = "digital_health"
+from = "2021-01-21"
+
+[[security]]
+ticker = "CLOV"
+name = "Clover Health"
+subsector = "digital_health"
+from = "2021-01-08"
+
+[[security]]
+ticker = "OSCR"
+name = "Oscar Health"
+subsector = "digital_health"
+from = "2021-03-03"
+
+[[security]]
+ticker = "AGL"
+name = "agilon health"
+subsector = "digital_health"
+from = "2021-04-15"
+
+[[security]]
+ticker = "PRVA"
+name = "Privia Health"
+subsector = "digital_health"
+from = "2021-04-29"
+
+[[security]]
+ticker = "DOCS"
+name = "Doximity"
+subsector = "digital_health"
+from = "2021-06-24"
+
+[[security]]
+ticker = "DH"
+name = "Definitive Healthcare"
+subsector = "digital_health"
+from = "2021-09-15"
+
+[[security]]
+ticker = "TEM"
+name = "Tempus AI"
+subsector = "digital_health"
+from = "2024-06-14"

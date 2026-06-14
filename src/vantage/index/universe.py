@@ -4,7 +4,16 @@ from __future__ import annotations
 
 from vantage.config import load_universe
 
-SUBSECTORS = ["pharma", "payers", "providers", "devices", "biotech", "tools", "distributors"]
+SUBSECTORS = [
+    "pharma",
+    "payers",
+    "providers",
+    "devices",
+    "biotech",
+    "tools",
+    "distributors",
+    "digital_health",
+]
 
 
 def members(subsector: str | None = None) -> list[dict]:
