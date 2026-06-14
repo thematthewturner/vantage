@@ -25,3 +25,5 @@ def test_build_baseline_uses_full_history_without_custom_base_date_filter():
 def test_baseline_tickers_match_configured_indexes():
     assert set(baseline_tickers()) == {meta["ticker"] for meta in BASELINE_INDEXES.values()}
     assert {"XLV", "IYH", "VHT"}.issubset(set(baseline_tickers()))
+    # Broad-market proxies are needed to separate sector beta from market beta.
+    assert {"SPY", "QQQ"}.issubset(set(baseline_tickers()))

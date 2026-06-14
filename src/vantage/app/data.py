@@ -27,7 +27,7 @@ import streamlit as st
 from vantage.config import Settings
 from vantage.index.universe import SUBSECTORS, index_id_for
 from vantage.storage.readers import current_series, index_levels
-from vantage.transforms.signals import yoy, zscore
+from vantage.transforms.signals import relative_strength, yoy, zscore
 
 # How long a query result is reused before we hit DuckDB again. The data only
 # changes once a day, so a few minutes keeps the UI instant and sidesteps the
@@ -172,6 +172,31 @@ def latest_weights(index_id: str) -> pd.DataFrame:
         """,
         (index_id, index_id),
     )
+
+
+def rebased_pair(index_id: str, benchmark_id: str, track: str = "level_tr") -> pd.DataFrame:
+    """`index_id` and `benchmark_id` levels rebased to 100 at their common start.
+
+    Columns are keyed by index id (the caller relabels for display). Empty if
+    either side is missing the requested track.
+    """
+    a = index_track(index_id)
+    b = index_track(benchmark_id)
+    if a.empty or b.empty or track not in a or track not in b:
+        return pd.DataFrame()
+    pair = pd.concat([a[track].rename(index_id), b[track].rename(benchmark_id)], axis=1).dropna()
+    if pair.empty:
+        return pair
+    return pair / pair.iloc[0] * 100.0
+
+
+def relative_track(index_id: str, benchmark_id: str, track: str = "level_tr") -> pd.Series:
+    """Relative-strength line of `index_id` vs `benchmark_id` (>100 = outperforming)."""
+    a = index_track(index_id)
+    b = index_track(benchmark_id)
+    if a.empty or b.empty or track not in a or track not in b:
+        return pd.Series(dtype=float)
+    return relative_strength(a[track], b[track])
 
 
 def subsector_tracks(track: str = "level_tr") -> pd.DataFrame:

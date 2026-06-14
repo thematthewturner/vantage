@@ -13,8 +13,11 @@ notebooks. The package is the product; notebooks are thin drivers.
   store. Phase 1 ships a **FRED** connector (medical-care CPI, healthcare
   employment, JOLTS health openings, PCE health services, hospital/pharma PPI,
   10Y Treasury) and an **equity-price** connector (yfinance).
-- **Builds full-history healthcare benchmark baselines** (`BASE_XLV`,
-  `BASE_IYH`, `BASE_VHT`) normalized to 100 from first available ETF history.
+- **Builds full-history benchmark baselines** — healthcare-sector ETFs
+  (`BASE_XLV`, `BASE_IYH`, `BASE_VHT`) and broad-market proxies (`BASE_SPY`,
+  `BASE_QQQ`), normalized to 100 from first available ETF history — plus a
+  **VHC-vs-benchmark relative-strength** view, so you can tell sector beta from
+  market beta (is healthcare beating *the market*, not just other health funds).
 - **Builds a custom index** (`VHC`) of ~28 healthcare names — market-cap
   weighted, quarterly rebalanced, base = 100, with both price-return and
   total-return tracks — plus per-sub-sector sub-indices (pharma, payers,

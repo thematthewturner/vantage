@@ -10,8 +10,11 @@ from __future__ import annotations
 
 import pandas as pd
 
-# Broad, liquid U.S. healthcare sector ETFs with long public price histories.
-# The keys are the canonical index ids written to index_values.
+# Liquid ETFs with long public price histories used as external benchmarks.
+# Healthcare-sector ETFs isolate sector beta; broad-market proxies (SPY, QQQ)
+# let us ask the more important question -- is VHC beating *the market*, not just
+# other healthcare funds. The keys are the canonical index ids written to
+# index_values.
 BASELINE_INDEXES: dict[str, dict[str, str]] = {
     "BASE_XLV": {
         "ticker": "XLV",
@@ -24,6 +27,14 @@ BASELINE_INDEXES: dict[str, dict[str, str]] = {
     "BASE_VHT": {
         "ticker": "VHT",
         "name": "Vanguard Health Care ETF",
+    },
+    "BASE_SPY": {
+        "ticker": "SPY",
+        "name": "SPDR S&P 500 ETF Trust",
+    },
+    "BASE_QQQ": {
+        "ticker": "QQQ",
+        "name": "Invesco QQQ Trust (Nasdaq-100)",
     },
 }
 

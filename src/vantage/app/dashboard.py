@@ -14,6 +14,7 @@ import pandas as pd
 import streamlit as st
 
 from vantage.app import charts, data
+from vantage.index.baselines import BASELINE_INDEXES
 from vantage.transforms.correlation import honesty_report, lead_lag
 from vantage.transforms.signals import yoy
 
@@ -50,7 +51,12 @@ def _check_password() -> bool:
 
 
 def _index_label(index_id: str) -> str:
-    return "VHC (whole universe)" if index_id == "VHC" else index_id.replace("VHC_", "").title()
+    if index_id == "VHC":
+        return "VHC (whole universe)"
+    if index_id.startswith("BASE_"):
+        meta = BASELINE_INDEXES.get(index_id)
+        return meta["ticker"] if meta else index_id.replace("BASE_", "")
+    return index_id.replace("VHC_", "").title()
 
 
 def _fmt_pct(x: float | None) -> str:
@@ -119,6 +125,39 @@ def tab_index() -> None:
             st.dataframe(
                 perf_df.style.format("{:+.1f}%", na_rep="--").map(_pct_color),
                 width="stretch",
+            )
+
+    baselines = [i for i in indices if i.startswith("BASE_")]
+    if baselines:
+        st.markdown("#### VHC vs benchmark")
+        st.caption(
+            "Is the healthcare basket beating the market, or just riding sector beta? "
+            "Left: both rebased to 100 at their common start. Right: VHC ÷ benchmark — "
+            "above 100 means VHC is ahead."
+        )
+        default = "BASE_SPY" if "BASE_SPY" in baselines else baselines[0]
+        bench = st.selectbox(
+            "Benchmark",
+            baselines,
+            index=baselines.index(default),
+            format_func=_index_label,
+            key="bench_index",
+        )
+        bcol1, bcol2 = st.columns([1, 1])
+        pair = data.rebased_pair("VHC", bench, track_col)
+        if not pair.empty:
+            pair = pair.rename(columns=_index_label)
+            bcol1.plotly_chart(
+                charts.overlay_chart(pair, "Rebased to 100 at common start"),
+                width="stretch",
+                config=_NO_MODEBAR,
+            )
+        rel = data.relative_track("VHC", bench, track_col)
+        if not rel.empty:
+            bcol2.plotly_chart(
+                charts.relative_chart(rel, f"VHC ÷ {_index_label(bench)} (>100 = VHC ahead)"),
+                width="stretch",
+                config=_NO_MODEBAR,
             )
 
     st.markdown("#### Sub-sector indices (rebased to 100)")

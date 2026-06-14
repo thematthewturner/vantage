@@ -3,7 +3,7 @@ import pandas as pd
 
 from vantage.transforms.align import asof_align
 from vantage.transforms.correlation import honesty_report, lead_lag
-from vantage.transforms.signals import yoy, zscore
+from vantage.transforms.signals import relative_strength, yoy, zscore
 
 
 def test_yoy_explicit_periods():
@@ -51,3 +51,30 @@ def test_honesty_report_flags_multiple_comparisons():
     rep = honesty_report(res, n_indicators_tested=10)
     assert rep["combinations_tested"] == 25 * 10
     assert any("combinations tested" in w for w in rep["warnings"])
+
+
+def test_relative_strength_rebases_and_tracks_outperformance():
+    idx = pd.date_range("2020-01-01", periods=3, freq="D")
+    series = pd.Series([100.0, 110.0, 121.0], index=idx)  # +10%, +10%
+    bench = pd.Series([100.0, 100.0, 100.0], index=idx)  # flat
+    rs = relative_strength(series, bench)
+    assert rs.iloc[0] == 100.0  # always rebased to base at the common start
+    assert abs(rs.iloc[-1] - 121.0) < 1e-9  # outperformance compounds above 100
+
+    # A benchmark that beats the series drives the line below 100.
+    rs_lag = relative_strength(bench, series)
+    assert rs_lag.iloc[-1] < 100.0
+
+
+def test_relative_strength_aligns_on_common_dates_only():
+    a = pd.Series([100.0, 110.0], index=pd.to_datetime(["2020-01-01", "2020-01-02"]))
+    b = pd.Series([100.0, 200.0], index=pd.to_datetime(["2020-01-02", "2020-01-03"]))
+    rs = relative_strength(a, b)  # only 2020-01-02 overlaps
+    assert rs.index.tolist() == [pd.Timestamp("2020-01-02")]
+    assert rs.iloc[0] == 100.0
+
+
+def test_relative_strength_empty_when_no_overlap():
+    a = pd.Series([100.0], index=pd.to_datetime(["2020-01-01"]))
+    b = pd.Series([100.0], index=pd.to_datetime(["2021-01-01"]))
+    assert relative_strength(a, b).empty
