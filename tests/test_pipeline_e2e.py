@@ -24,6 +24,15 @@ def _seed(con):
     for i, d in enumerate(dates):
         rows.append(
             {
+                "ticker": "XLV",
+                "date": d.date(),
+                "close": 50.0 + i,
+                "adj_close": 50.0 + i * 1.5,
+                "shares_out": 10_000.0,
+            }
+        )
+        rows.append(
+            {
                 "ticker": "LLY",
                 "date": d.date(),
                 "close": 100.0 + i,
@@ -58,8 +67,13 @@ def test_build_all_indices_end_to_end(con, settings, monkeypatch):
     _seed(con)
 
     built = build_all_indices(con, settings)
+    assert "BASE_XLV" in built
     assert "VHC" in built
     assert "VHC_PHARMA" in built and "VHC_PAYERS" in built
+
+    baseline = index_levels(con, "BASE_XLV")
+    assert len(baseline) == 10
+    assert abs(baseline["level_pr"].iloc[0] - 100.0) < 1e-9
 
     whole = index_levels(con, "VHC")
     assert len(whole) == 10

@@ -26,6 +26,7 @@ class Settings:
     raw_dir: Path
     index_base_value: float
     index_base_date: dt.date
+    index_baseline_start_date: dt.date
     rebalance: str
 
     @classmethod
@@ -38,6 +39,9 @@ class Settings:
             raw_dir=REPO_ROOT / storage["raw_dir"],
             index_base_value=float(index["base_value"]),
             index_base_date=dt.date.fromisoformat(index["base_date"]),
+            index_baseline_start_date=dt.date.fromisoformat(
+                index.get("baseline_start_date", index["base_date"])
+            ),
             rebalance=index["rebalance"],
         )
 
@@ -50,3 +54,8 @@ def load_sources() -> dict:
 def load_universe() -> list[dict]:
     """List of security dicts: ticker, name, subsector, from, to."""
     return _load_toml(CONFIG_DIR / "universe.toml").get("security", [])
+
+
+def load_investor_firms() -> list[dict]:
+    """Curated top-25 healthcare investor-firm watchlist records."""
+    return _load_toml(CONFIG_DIR / "investor_firms.toml").get("firm", [])

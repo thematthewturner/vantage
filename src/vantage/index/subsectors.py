@@ -8,6 +8,7 @@ from __future__ import annotations
 import duckdb
 
 from vantage.config import Settings
+from vantage.index.baselines import BASELINE_INDEXES, build_baseline_index
 from vantage.index.construction import build_index
 from vantage.index.universe import SUBSECTORS, index_id_for, members
 from vantage.storage.readers import prices_wide  # noqa: F401  (re-exported convenience)
@@ -27,6 +28,17 @@ def build_all_indices(
     settings = settings or Settings.load()
     prices = _prices_long(con)
     built: list[str] = []
+
+    for index_id, meta in BASELINE_INDEXES.items():
+        levels = build_baseline_index(
+            index_id,
+            meta["ticker"],
+            prices,
+            base_value=settings.index_base_value,
+        )
+        if not levels.empty:
+            write_index(con, index_id, levels, levels.iloc[0:0])
+            built.append(index_id)
 
     for subsector in [None, *SUBSECTORS]:
         mem = members(subsector)
