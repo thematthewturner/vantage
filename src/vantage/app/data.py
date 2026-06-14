@@ -24,6 +24,7 @@ import duckdb
 import pandas as pd
 import streamlit as st
 
+from vantage import forecast
 from vantage.config import Settings
 from vantage.index.universe import SUBSECTORS, index_id_for
 from vantage.storage.readers import current_series, index_levels, prices_wide
@@ -233,6 +234,73 @@ def subsector_tracks(track: str = "level_tr") -> pd.DataFrame:
     frame = pd.DataFrame(cols).dropna(how="all")
     frame = frame.loc[frame.dropna().index.min() :] if not frame.dropna().empty else frame
     return frame / frame.bfill().iloc[0] * 100.0
+
+
+# --- forecast (per-stock next-month ARX backtest) --------------------------
+
+
+def _index_level(index_id: str, track: str = "level_tr") -> pd.Series:
+    """A single index level series, or empty if the index/track is missing."""
+    df = index_track(index_id)
+    if df.empty or track not in df:
+        return pd.Series(dtype=float)
+    return df[track]
+
+
+@st.cache_data(ttl=CACHE_TTL)
+def _exog_frame() -> pd.DataFrame:
+    """All indicator series as one date-indexed frame (columns = series_id)."""
+    cat = series_catalog()
+    cols: dict[str, pd.Series] = {}
+    for _, row in cat.iterrows():
+        s = indicator_series(row["source"], row["series_id"])
+        if not s.empty:
+            cols[row["series_id"]] = s["value"]
+    if not cols:
+        return pd.DataFrame()
+    return pd.DataFrame(cols).sort_index()
+
+
+def _run_backtest(ticker: str, px: pd.DataFrame, secs: pd.DataFrame, exog) -> tuple:
+    """Backtest one stock given shared, already-loaded inputs."""
+    sub = secs.loc[ticker, "subsector"] if ticker in secs.index else None
+    sector = _index_level(index_id_for(sub)) if sub else pd.Series(dtype=float)
+    market = _index_level("VHC")
+    return forecast.backtest_stock(
+        px[ticker],
+        exog=exog,
+        sector_index=sector if not sector.empty else None,
+        market_index=market if not market.empty else None,
+    )
+
+
+@st.cache_data(ttl=CACHE_TTL)
+def forecast_backtest(ticker: str) -> tuple[pd.DataFrame, dict]:
+    """Walk-forward backtest + honest metrics for one stock's next-month model."""
+    px = constituent_prices("VHC")
+    if px.empty or ticker not in px.columns:
+        return pd.DataFrame(columns=["pred", "actual"]), forecast.metrics(pd.DataFrame())
+    exog = _exog_frame()
+    secs = securities().set_index("ticker")
+    return _run_backtest(ticker, px, secs, exog if not exog.empty else None)
+
+
+@st.cache_data(ttl=CACHE_TTL)
+def forecast_leaderboard() -> pd.DataFrame:
+    """Backtest metrics for every constituent, one row per stock."""
+    px = constituent_prices("VHC")
+    if px.empty:
+        return pd.DataFrame()
+    secs = securities().set_index("ticker")
+    exog = _exog_frame()
+    exog_arg = exog if not exog.empty else None
+    rows = []
+    for ticker in px.columns:
+        name = secs.loc[ticker, "name"] if ticker in secs.index else ticker
+        sub = secs.loc[ticker, "subsector"] if ticker in secs.index else None
+        _, m = _run_backtest(ticker, px, secs, exog_arg)
+        rows.append({"ticker": ticker, "name": name, "subsector": sub, **m})
+    return pd.DataFrame(rows)
 
 
 # --- indicator series ------------------------------------------------------

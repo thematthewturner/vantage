@@ -99,9 +99,7 @@ def relative_chart(series: pd.Series, title: str, *, base: float = 100.0) -> go.
     """Relative-strength line; the dashed baseline marks parity (above = ahead)."""
     s = series.dropna()
     fig = go.Figure(
-        go.Scatter(
-            x=s.index, y=s.values, name="relative strength", line=dict(color=AMBER, width=2)
-        )
+        go.Scatter(x=s.index, y=s.values, name="relative strength", line=dict(color=AMBER, width=2))
     )
     fig = _style(fig, height=320, title=title)
     fig.add_hline(y=base, line=dict(color=CYAN, width=1, dash="dot"))
@@ -189,6 +187,30 @@ def movers_bar(movers: pd.DataFrame, title: str) -> go.Figure:
     fig = go.Figure(go.Bar(x=m["return_pct"], y=m["ticker"], orientation="h", marker_color=colors))
     fig = _style(fig, height=max(240, 20 * len(m) + 80), title=title)
     fig.update_xaxes(title="return (%)")
+    return fig
+
+
+def forecast_chart(backtest: pd.DataFrame, title: str) -> go.Figure:
+    """Walk-forward predicted vs actual next-month return (%), out of sample."""
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=backtest.index,
+            y=backtest["actual"] * 100.0,
+            name="actual",
+            line=dict(color=CYAN, width=1.5),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=backtest.index,
+            y=backtest["pred"] * 100.0,
+            name="predicted",
+            line=dict(color=AMBER, width=1.5),
+        )
+    )
+    fig = _style(fig, height=380, title=title)
+    fig.update_yaxes(title="next-month return (%)")
     return fig
 
 
