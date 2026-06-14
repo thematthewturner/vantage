@@ -4,7 +4,8 @@ This runs the **terminal** (Streamlit web app) and a **scheduler** that refreshe
 the data once a day, both from one Docker image, sharing a persistent data volume.
 
 ```
-web        Streamlit dashboard, served on port 80
+caddy      front door: HTTP on :80, automatic HTTPS on :443 (see "HTTPS")
+web        Streamlit dashboard (internal; reached by caddy)
 scheduler  runs `vantage.pipeline.refresh` daily (and once on first boot)
 vantage-data   named volume holding data/ (DuckDB store + raw Parquet)
 ```
@@ -47,11 +48,12 @@ Then open `http://<droplet-ip>/` — that's your terminal.
 
 ## 4. Firewall
 
-Open HTTP and SSH only:
+Open HTTP(S) and SSH only:
 
 ```bash
 ufw allow OpenSSH
 ufw allow 80/tcp
+ufw allow 443/tcp   # for HTTPS (see below)
 ufw enable
 ```
 
@@ -97,20 +99,23 @@ One-time setup:
 Each run does `git pull --ff-only` then
 `docker compose -f deploy/docker-compose.yml up -d --build` on the droplet.
 
-## HTTPS (optional)
+## HTTPS
 
-To serve over TLS with your own domain, put a reverse proxy in front. The
-simplest is [Caddy](https://caddyserver.com) (automatic Let's Encrypt):
+A [Caddy](https://caddyserver.com) reverse proxy is the front door (see
+`Caddyfile`). It serves plain HTTP on port 80 until you give it a hostname, then
+it fetches a Let's Encrypt certificate automatically and serves HTTPS on 443.
 
-1. Point an A record at the droplet IP.
-2. Set `WEB_PORT=8501` in `.env` so Streamlit isn't on port 80.
-3. Run Caddy with a one-line `Caddyfile`:
+To turn on TLS:
 
-   ```
-   your.domain.com {
-       reverse_proxy localhost:8501
-   }
-   ```
+1. **Pick a hostname.** With your own domain, point an A record at the droplet
+   IP. With only an IP, use [sslip.io](https://sslip.io) — `<ip>.sslip.io`
+   resolves straight to that IP, so no DNS setup or purchase is needed.
+2. Set it in `.env`, e.g. `CADDY_SITE=165.227.95.213.sslip.io`.
+3. Open 443 in the firewall: `ufw allow 443/tcp`.
+4. `docker compose -f deploy/docker-compose.yml up -d`.
+
+Caddy redirects HTTP→HTTPS once a hostname is set. Leave `CADDY_SITE` blank for
+plain HTTP on port 80.
 
 ## Notes
 

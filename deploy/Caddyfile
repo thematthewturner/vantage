@@ -1,0 +1,12 @@
+# Front door for the vantage terminal.
+#
+# CADDY_SITE (set in deploy/.env) controls the hostname:
+#   unset           -> serve plain HTTP on :80 (no certificate)
+#   a real hostname -> automatic HTTPS via Let's Encrypt, e.g.
+#                      CADDY_SITE=165.227.95.213.sslip.io
+#
+# sslip.io resolves <ip>.sslip.io straight to that IP, so it gives a real
+# hostname (and thus a real cert) for a droplet that has only an IP.
+{$CADDY_SITE::80} {
+	reverse_proxy web:8501
+}

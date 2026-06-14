@@ -1,5 +1,7 @@
 # vantage on a single DigitalOcean droplet:
-#   web        - the Streamlit terminal (port 80 -> 8501)
+#   caddy      - front door: HTTP on :80, automatic HTTPS on :443 when a
+#                hostname is set (CADDY_SITE in .env); reverse-proxies to web
+#   web        - the Streamlit terminal (internal, on 8501)
 #   scheduler  - runs the daily refresh and shares the data volume with web
 #
 #   cp deploy/.env.example deploy/.env && edit it, then:
@@ -8,6 +10,23 @@
 name: vantage
 
 services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    # CADDY_SITE picks the hostname: unset -> plain HTTP on :80; a real
+    # hostname -> automatic Let's Encrypt HTTPS on :443.
+    env_file: .env
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - web
+
   web:
     build:
       context: ..
@@ -18,8 +37,9 @@ services:
     # can't OOM the droplet and take both services down.
     mem_limit: 1g
     cpus: 1.0
-    ports:
-      - "${WEB_PORT:-80}:8501"
+    # Reached by caddy over the compose network; not published to the host.
+    expose:
+      - "8501"
     volumes:
       - vantage-data:/app/data
     healthcheck:
@@ -45,3 +65,5 @@ services:
 
 volumes:
   vantage-data:
+  caddy-data:
+  caddy-config:
