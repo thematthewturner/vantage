@@ -96,3 +96,5 @@ simplest is [Caddy](https://caddyserver.com) (automatic Let's Encrypt):
 - Set `VANTAGE_DASHBOARD_PASSWORD` in `.env` to gate the dashboard behind a
   single password. For anything more than personal use, also put it behind a
   proxy with real auth and TLS.
+- Set `VANTAGE_ALERT_WEBHOOK` in `.env` to a Slack or Discord incoming-webhook
+  URL to get pinged when the nightly refresh fails or crashes. Unset = silent.

@@ -14,6 +14,10 @@ services:
       dockerfile: deploy/Dockerfile
     restart: unless-stopped
     env_file: .env
+    # Cap resources so a heavy render (e.g. the all-indicator lead-lag heatmap)
+    # can't OOM the droplet and take both services down.
+    mem_limit: 1g
+    cpus: 1.0
     ports:
       - "${WEB_PORT:-80}:8501"
     volumes:
@@ -31,6 +35,10 @@ services:
       dockerfile: deploy/Dockerfile
     restart: unless-stopped
     env_file: .env
+    # The daily refresh pulls and pivots prices; bound it so a runaway pull
+    # can't starve the web service on a small droplet.
+    mem_limit: 1g
+    cpus: 1.0
     command: ["python", "-m", "vantage.pipeline.scheduler"]
     volumes:
       - vantage-data:/app/data
