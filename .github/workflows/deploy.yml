@@ -65,9 +65,14 @@ jobs:
           fi
           cd "$REPO_DIR"
 
+          # Remember what's currently deployed so we can tell, after pulling,
+          # whether the security universe changed (new tickers need ingesting).
+          PREV_SHA="$(git rev-parse HEAD 2>/dev/null || echo "")"
+
           git fetch --prune origin
           git checkout "$REF"
           git pull --ff-only origin "$REF"
+          NEW_SHA="$(git rev-parse HEAD)"
 
           if [ ! -f deploy/.env ]; then
             echo "ERROR: deploy/.env is missing on the droplet." >&2
@@ -77,6 +82,19 @@ jobs:
 
           docker compose -f deploy/docker-compose.yml up -d --build
           docker compose -f deploy/docker-compose.yml ps
+
+          # If config/universe.toml changed since the previously deployed
+          # commit, the new names have no prices yet -- run a one-off refresh so
+          # they appear without waiting for the nightly job. Errors from a flaky
+          # data source are logged but must not fail the deploy; the nightly
+          # refresh retries.
+          if [ -n "$PREV_SHA" ] && [ "$PREV_SHA" != "$NEW_SHA" ] \
+             && ! git diff --quiet "$PREV_SHA" "$NEW_SHA" -- config/universe.toml; then
+            echo "config/universe.toml changed -- running one-off refresh to ingest new names."
+            docker compose -f deploy/docker-compose.yml run --rm scheduler \
+              python -m vantage.pipeline.refresh \
+              || echo "::warning::one-off refresh reported errors (non-fatal); nightly job will retry."
+          fi
           REMOTE
 
           echo "Deployed ${REF} to ${HOST}."
