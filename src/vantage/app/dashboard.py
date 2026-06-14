@@ -347,6 +347,61 @@ def tab_leadlag() -> None:
         st.plotly_chart(charts.correlation_heatmap(mat, ""), width="stretch", config=_NO_MODEBAR)
 
 
+def tab_forecast() -> None:
+    lb = data.forecast_leaderboard()
+    if lb.empty:
+        st.info("No price history yet. Run the refresh first.")
+        return
+
+    st.caption(
+        "Leakage-free walk-forward backtest of a **next-month ARX** return model per stock "
+        "(autoregressive return lags + macro indicators + sector/market momentum). Honestly: "
+        "monthly stock returns are mostly noise, so expect out-of-sample R² near zero — and "
+        "across 28 names a few will look good by chance. The baseline is a random walk "
+        "(predict 0); a model only earns its keep if it beats that. **Not investment advice.**"
+    )
+
+    n_beat = int(lb["beats_baseline"].sum())
+    avg_hit = lb["hit_rate"].dropna().mean()
+    cols = st.columns(3)
+    cols[0].metric("Stocks modeled", len(lb))
+    cols[1].metric("Beat random walk (OOS)", f"{n_beat} / {len(lb)}")
+    cols[2].metric("Avg directional hit", _fmt_pct(avg_hit * 100) if pd.notna(avg_hit) else "--")
+
+    show = lb.assign(hit_rate=lb["hit_rate"] * 100)[
+        ["ticker", "name", "subsector", "n", "hit_rate", "oos_r2", "beats_baseline"]
+    ].sort_values("oos_r2", ascending=False, na_position="last")
+    st.dataframe(
+        show.style.format({"hit_rate": "{:.0f}%", "oos_r2": "{:+.3f}"}, na_rep="--").map(
+            _pct_color, subset=["oos_r2"]
+        ),
+        width="stretch",
+        hide_index=True,
+    )
+
+    st.divider()
+    st.markdown("#### Per-stock backtest")
+    tick = st.selectbox("Stock", list(lb["ticker"]), key="fc_stock")
+    bt, m = data.forecast_backtest(tick)
+    if bt.empty:
+        st.caption("Not enough monthly history to backtest this stock.")
+        return
+    mc = st.columns(4)
+    mc[0].metric("Out-of-sample R²", f"{m['oos_r2']:+.3f}" if m["oos_r2"] is not None else "--")
+    mc[1].metric(
+        "Directional hit", _fmt_pct(m["hit_rate"] * 100) if m["hit_rate"] is not None else "--"
+    )
+    mc[2].metric(
+        "RMSE vs random walk",
+        f"{m['rmse'] / m['rmse_baseline']:.3f}x" if m["rmse_baseline"] else "--",
+    )
+    mc[3].metric("Beats baseline", "yes" if m["beats_baseline"] else "no")
+    st.plotly_chart(
+        charts.forecast_chart(bt, f"{tick} — predicted vs actual next-month return"),
+        width="stretch",
+    )
+
+
 def tab_health() -> None:
     h = data.health()
     cols = st.columns(4)
@@ -406,11 +461,12 @@ def main() -> None:
     render_status_bar()
     st.divider()
 
-    index_t, indicators_t, leadlag_t, health_t = st.tabs(
+    index_t, indicators_t, leadlag_t, forecast_t, health_t = st.tabs(
         [
             "\U0001f4c8 Index",
             "\U0001f4ca Indicators",
             "\U0001f517 Lead-Lag",
+            "\U0001f52e Forecast",
             "\U0001fa7a Data health",
         ]
     )
@@ -420,6 +476,8 @@ def main() -> None:
         tab_indicators()
     with leadlag_t:
         tab_leadlag()
+    with forecast_t:
+        tab_forecast()
     with health_t:
         tab_health()
 
